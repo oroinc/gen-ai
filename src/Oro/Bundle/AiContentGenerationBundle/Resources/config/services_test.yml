@@ -1,0 +1,15 @@
+services:
+    oro_ai_content_generation.factory.content_generation_vertex_ai_client_factory:
+        class: Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationVertexAiClientFactory
+        arguments:
+            - !service { class: Oro\Bundle\AiContentGenerationBundle\Tests\Functional\Stubs\GoogleClientStub }
+            - !service { class: Oro\Bundle\AiContentGenerationBundle\Tests\Functional\Stubs\GuzzleClientStub }
+            - ['https://www.googleapis.com/auth/cloud-platform']
+        tags:
+            - { name: oro_ai_content_generation.client_factory }
+
+    oro_ai_content_generation.factory.test.open_ai_sdk_factory:
+        parent: oro_ai_content_generation.factory.open_ai_sdk_factory
+        decorates: oro_ai_content_generation.factory.open_ai_sdk_factory
+        public: true
+

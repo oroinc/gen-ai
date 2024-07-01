@@ -1,0 +1,125 @@
+parameters:
+    oro_ai_content_generation.open_ai_max_iterations_amount: 5
+    oro_ai_content_generation.open_ai_max_token: 625
+    oro_ai_content_generation.characters_amounts: {
+        'small': 500,
+        'medium': 1000,
+        'large': 2500
+    }
+
+services:
+    oro_ai_content_generation.integration.open_ai_channel:
+        class: Oro\Bundle\AiContentGenerationBundle\Integration\OpenAiChannel
+        tags:
+            - { name: oro_integration.channel, type: open_ai }
+
+    oro_ai_content_generation.integration.open_ai_transport:
+        class: Oro\Bundle\AiContentGenerationBundle\Integration\OpenAiTransport
+        tags:
+            - { name: oro_integration.transport, type: open_ai, channel_type: open_ai }
+
+    oro_ai_content_generation.integration.vertex_ai_channel:
+        class: Oro\Bundle\AiContentGenerationBundle\Integration\VertexAiChannel
+        tags:
+            - { name: oro_integration.channel, type: vertex_ai }
+
+    oro_ai_content_generation.integration.vertex_ai_transport:
+        class: Oro\Bundle\AiContentGenerationBundle\Integration\VertexAiTransport
+        tags:
+            - { name: oro_integration.transport, type: vertex_ai, channel_type: vertex_ai }
+
+    oro_ai_content_generation.factory.content_generation_vertex_ai_client_factory:
+        class: Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationVertexAiClientFactory
+        arguments:
+            - !service { class: Google\Client }
+            - !service { class: GuzzleHttp\Client }
+            - ['https://www.googleapis.com/auth/cloud-platform']
+        tags:
+            - { name: oro_ai_content_generation.client_factory }
+
+    oro_ai_content_generation.factory.open_ai_sdk_factory:
+        class: Oro\Bundle\AiContentGenerationBundle\Factory\OpenAiSdkClientFactory
+
+    oro_ai_content_generation.factory.content_generation_open_ai_factory:
+        class: Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationOpenAiClientFactory
+        arguments:
+            - '@oro_ai_content_generation.factory.open_ai_sdk_factory'
+            - '%oro_ai_content_generation.open_ai_max_iterations_amount%'
+            - '%oro_ai_content_generation.open_ai_max_token%'
+        tags:
+            - { name: oro_ai_content_generation.client_factory }
+
+    oro_ai_content_generation.factory.ai_client_factory:
+        class: Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationClientFactory
+        arguments:
+            - '@oro_config.manager'
+            - '@doctrine'
+            - !tagged_iterator oro_ai_content_generation.client_factory
+
+    oro_ai_content_generation.ai_client:
+        class: Oro\Bundle\AiContentGenerationBundle\Client\ContentGenerationClientInterface
+        factory: ['@oro_ai_content_generation.factory.ai_client_factory', 'getActivatedClient']
+        lazy: true
+
+    Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationClientFactory:
+        alias: oro_ai_content_generation.factory.ai_client_factory
+
+    oro_ai_content_generation.provider.extend_configs_provider:
+        class: Oro\Bundle\AiContentGenerationBundle\Provider\ExtendConfigsProvider
+        arguments:
+            - '@oro_entity_config.provider.extend'
+            - '@oro_entity_config.provider.view'
+            - '@oro_entity_extend.extend.field_type_helper'
+            - '@oro_featuretoggle.checker.feature_checker'
+
+    oro_ai_content_generation.provider.product_attributes_provider:
+        class: Oro\Bundle\AiContentGenerationBundle\Provider\ProductAttributesProvider
+        arguments:
+            - '@oro_entity_config.provider.entity'
+            - '@oro_ai_content_generation.provider.extend_configs_provider'
+            - '@translator'
+
+    oro_ai_content_generation.provider.localization_provider:
+        class: Oro\Bundle\AiContentGenerationBundle\Provider\LocalizationProvider
+        arguments:
+            - '@doctrine'
+
+    oro_ai_content_generation.entity_form_resolver:
+        class: Oro\Bundle\AiContentGenerationBundle\Form\EntityFormResolver
+        arguments:
+            - '@form.factory'
+            - '@security.token_storage'
+
+    oro_ai_content_generation.provider.product_task_context_provider:
+        class: Oro\Bundle\AiContentGenerationBundle\Provider\ProductTaskContextProvider
+        arguments:
+            - '@oro_ai_content_generation.entity_form_resolver'
+            - '@oro_ai_content_generation.provider.localization_provider'
+            - '@translator'
+            - '@oro_ai_content_generation.provider.product_attributes_provider'
+
+    oro_ai_content_generation.provider.tasks_provider:
+        class: Oro\Bundle\AiContentGenerationBundle\Provider\TasksProvider
+        arguments:
+            - !tagged_iterator oro_ai_content_generation.task
+
+    Oro\Bundle\AiContentGenerationBundle\Provider\TasksProvider:
+        alias: oro_ai_content_generation.provider.tasks_provider
+
+    oro_ai_content_generation.factory.content_generation_request_factory:
+        class: Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationRequestFactory
+        arguments:
+            - '@translator'
+            - '@request_stack'
+            - '@oro_ai_content_generation.ai_client'
+            - '%oro_ai_content_generation.characters_amounts%'
+
+    oro_ai_content_generation.feature.feature_voter:
+        class: Oro\Bundle\AiContentGenerationBundle\Feature\Voter\FeatureVoter
+        arguments:
+            - '@oro_config.manager'
+            - '@doctrine'
+            - '@request_stack'
+            - ['oro_organization_config', 'oro_user_config', 'oro_config_configuration_system']
+        tags:
+            - { name: oro_featuretogle.voter }

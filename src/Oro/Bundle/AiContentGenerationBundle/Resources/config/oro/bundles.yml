@@ -1,0 +1,2 @@
+bundles:
+    - { name: Oro\Bundle\AiContentGenerationBundle\OroAiContentGenerationBundle, priority: 110 }

@@ -1,0 +1,18 @@
+.ai-content-generation-form {
+    .form-horizontal {
+        max-width: 800px;
+    }
+    .control-group {
+        .control-label {
+            min-width: 180px;
+        }
+
+        .controls {
+            .select2-container,
+            textarea {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+}
