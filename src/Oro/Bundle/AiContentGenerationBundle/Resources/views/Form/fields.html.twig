@@ -1,0 +1,48 @@
+{% block _ai_content_generation_oro_ai_content_generation___generator_type_row %}
+    {% apply spaceless %}
+        {{ form_row(form) }}
+        <div class="control-group">
+            <div class="controls">
+                <p class="warning">{{ 'oro_ai_content_generation.system_configuration.field.generator_type.warning.text'|trans }}</p>
+            </div>
+        </div>
+    {% endapply %}
+{% endblock %}
+
+{% block oro_open_ai_settings_widget %}
+    {{ form_widget(form) }}
+
+    <div class="control-group control-group-button">
+        <div class="controls">
+            <button type="button"
+                class="btn btn-primary"
+                data-page-component-module="orointegration/js/app/components/integration-connection-checker-component"
+                data-page-component-options="{{ {
+                    'formSelector': '[name="oro_integration_channel_form"]',
+                    'backendUrl': path('oro_ai_content_generation_validate_connection', {'channelId': form.vars.value.channel.id|default(0) })
+                }|json_encode }}"
+            >
+                {{ 'oro_ai_content_generation.integration.check_connection.open_ai.button'|trans }}
+            </button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block oro_vertex_ai_settings_widget %}
+    {{ form_widget(form) }}
+
+    <div class="control-group control-group-button">
+        <div class="controls">
+            <button type="button"
+                class="btn btn-primary"
+                data-page-component-module="orointegration/js/app/components/integration-connection-checker-component"
+                data-page-component-options="{{ {
+                    'formSelector': '[name="oro_integration_channel_form"]',
+                    'backendUrl': path('oro_ai_content_generation_validate_connection', {'channelId': form.vars.value.channel.id|default(0) })
+                }|json_encode }}"
+            >
+                {{ 'oro_ai_content_generation.integration.check_connection.vertex_ai.button'|trans }}
+            </button>
+        </div>
+    </div>
+{% endblock %}

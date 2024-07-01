@@ -1,0 +1,20 @@
+services:
+    oro_ai_content_generation.factory.content_generation_open_ai_factory.mock:
+        class: Oro\Bundle\AiContentGenerationBundle\Tests\Behat\Mock\Factory\ContentGenerationOpenAiClientFactoryMock
+        decorates: oro_ai_content_generation.factory.content_generation_open_ai_factory
+        arguments:
+            - '@oro_ai_content_generation.factory.open_ai_sdk_factory'
+            - '%oro_ai_content_generation.open_ai_max_iterations_amount%'
+            - '%oro_ai_content_generation.open_ai_max_token%'
+        tags:
+            - { name: oro_ai_content_generation.client_factory }
+
+    oro_ai_content_generation.factory.content_generation_vertex_ai_client_factory.mock:
+        class: Oro\Bundle\AiContentGenerationBundle\Tests\Behat\Mock\Factory\ContentGenerationVertexAiClientFactoryMock
+        decorates: oro_ai_content_generation.factory.content_generation_vertex_ai_client_factory
+        arguments:
+            - !service { class: Google\Client }
+            - !service { class: GuzzleHttp\Client }
+            - ['https://www.googleapis.com/auth/cloud-platform']
+        tags:
+            - { name: oro_ai_content_generation.client_factory }
