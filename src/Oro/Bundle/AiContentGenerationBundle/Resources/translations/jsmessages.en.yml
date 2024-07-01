@@ -1,0 +1,7 @@
+oro:
+    ai_content_generation:
+        wysiwyg:
+            component:
+                aigeneration:
+                    title: 'AI-Powered Content Assistant'
+                    tooltip: 'Open AI-Powered Content Assistant'

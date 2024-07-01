@@ -1,0 +1,60 @@
+system_configuration:
+    groups:
+        ai_content_generation:
+            title: oro_ai_content_generation.system_configuration.group.ai_content_generation.label
+            icon: fa-commenting
+        ai_content_generation_settings:
+            title: oro_ai_content_generation.system_configuration.group.ai_content_generation_settings.label
+    fields:
+        oro_ai_content_generation.enable_ai_content_generation:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            page_reload: true
+            options:
+                label: oro_ai_content_generation.system_configuration.field.enable_ai_content_generation.label
+                tooltip: oro_ai_content_generation.system_configuration.field.enable_ai_content_generation.tooltip
+
+        oro_ai_content_generation.generator_type:
+            data_type: integer
+            type: Oro\Bundle\IntegrationBundle\Form\Type\ConfigIntegrationSelectType
+            options:
+                label: oro_ai_content_generation.system_configuration.field.generator_type.label
+                tooltip: oro_ai_content_generation.system_configuration.field.generator_type.tooltip
+                allowed_types:
+                    - open_ai
+                    - vertex_ai
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            ai_content_generation:
+                                children:
+                                    ai_content_generation_settings:
+                                        children:
+                                            - oro_ai_content_generation.enable_ai_content_generation
+                                            - oro_ai_content_generation.generator_type
+
+        organization_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            ai_content_generation:
+                                children:
+                                    ai_content_generation_settings:
+                                        children:
+                                            - oro_ai_content_generation.generator_type
+
+        user_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            ai_content_generation:
+                                children:
+                                    ai_content_generation_settings:
+                                        children:
+                                            - oro_ai_content_generation.generator_type

@@ -1,0 +1,11 @@
+features:
+    oro_ai_content_generation:
+        label: oro_ai_content_generation.system_configuration.group.ai_content_generation.label
+        toggle: 'oro_ai_content_generation.enable_ai_content_generation'
+        allow_if_all_abstain: true
+        configuration:
+            - oro_ai_content_generation.generator_type
+        routes:
+            - oro_ai_content_generation_form
+            - oro_ai_content_generation_update
+            - oro_ai_content_generation_form_content

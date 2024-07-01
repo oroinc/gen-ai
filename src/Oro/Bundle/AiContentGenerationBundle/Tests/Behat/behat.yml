@@ -1,0 +1,41 @@
+oro_behat_extension:
+    suites:
+        OroAiContentGenerationBundle:
+            contexts:
+                - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+                - Oro\Bundle\DataGridBundle\Tests\Behat\Context\GridContext
+                - Oro\Bundle\FormBundle\Tests\Behat\Context\FormContext
+                - Oro\Bundle\ConfigBundle\Tests\Behat\Context\FeatureContext
+                - Oro\Bundle\CMSBundle\Tests\Behat\Context\FeatureContext
+            paths:
+                - '@OroAiContentGenerationBundle/Tests/Behat/Features'
+    elements:
+        Open AI Integration Form:
+            selector: "form[id^='oro_integration_channel_form-uid']"
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+            options:
+                mapping:
+                    Label: 'oro_integration_channel_form[transport][labels][values][default]'
+
+        Vertex AI Integration Form:
+            selector: "form[id^='oro_integration_channel_form-uid']"
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+            options:
+                mapping:
+                    Label: 'oro_integration_channel_form[transport][labels][values][default]'
+
+        AI-Powered Content Assistant:
+            selector: "div[title='AI-Powered Content Assistant']"
+
+        Open AI-Powered Content Assistant:
+            selector: '[aria-label="Open AI-Powered Content Assistant"]'
+
+        AI-Powered Content Assistant Popup Form:
+            selector: "form[id^='oro_ai_content_generation-uid']"
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+            options:
+                mapping:
+                    Task: 'oro_ai_content_generation[task]'
+                    Keywords and Features: 'oro_ai_content_generation[content]'
+                    Text tone: 'oro_ai_content_generation[tone]'
+                    Content preview: 'oro_ai_content_generation[preview]'

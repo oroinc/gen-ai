@@ -1,0 +1,5 @@
+oro_ai_content_generation:
+    integration:
+        vertex_ai:
+            config_file:
+                blank: 'Vertex AI config file should not be blank.'

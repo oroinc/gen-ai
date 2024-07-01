@@ -1,0 +1,34 @@
+{
+    "name": "oro/gen-ai",
+    "description": "OroCommerce AI Generation Integration",
+    "license": "OSL-3.0",
+    "keywords": ["Oro", "AI Generation", "Integration"],
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "https://www.orocommerce.com/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Oro\\Bundle\\AiContentGenerationBundle\\": "src/Oro/Bundle/AiContentGenerationBundle"},
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "require": {
+        "oro/commerce": "6.0.*",
+        "openai-php/client": "^0.4.1",
+        "google/apiclient": "^2.12.1"
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "6.0-dev"
+        }
+    }
+}

@@ -1,0 +1,123 @@
+services:
+    oro_ai_content_generation.abstract_simple_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\AbstractSimpleTask
+        abstract: true
+        arguments:
+            - '@oro_entity.helper.field_helper'
+            - '@translator'
+
+    oro_ai_content_generation.correct_grammar_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\CorrectGrammarTask
+        parent: oro_ai_content_generation.abstract_simple_task
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.expand_text_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\ExpandTextTask
+        parent: oro_ai_content_generation.abstract_simple_task
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.shorten_text_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\ShortenTextTask
+        parent: oro_ai_content_generation.abstract_simple_task
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.manual_prompt_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\ManualPromptTask
+        arguments:
+            - '@translator'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.extract_product_attributes_from_short_description_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\ExtractProductAttributesTask
+        arguments:
+            - '@oro_ai_content_generation.provider.product_task_context_provider'
+            - 'shortDescriptions'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.extract_product_attributes_from_long_description_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\ExtractProductAttributesTask
+        arguments:
+            - '@oro_ai_content_generation.provider.product_task_context_provider'
+            - 'descriptions'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.populate_long_description_with_open_prompt_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\PopulateProductDescriptionOpenPromptTask
+        arguments:
+            - '@translator'
+            - '@oro_ai_content_generation.provider.product_task_context_provider'
+            - 'descriptions'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.populate_short_description_with_open_prompt_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\PopulateProductDescriptionOpenPromptTask
+        arguments:
+            - '@translator'
+            - '@oro_ai_content_generation.provider.product_task_context_provider'
+            - 'shortDescriptions'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.populate_product_long_description_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\PopulateProductDescriptionTask
+        arguments:
+            - '@oro_ai_content_generation.provider.product_task_context_provider'
+            - 'descriptions'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.populate_product_short_description_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\PopulateProductDescriptionTask
+        arguments:
+            - '@oro_ai_content_generation.provider.product_task_context_provider'
+            - 'shortDescriptions'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.populate_product_short_description_from_long_description_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\PopulateProductShortDescriptionFromLongDescriptionTask
+        arguments:
+            - '@oro_ai_content_generation.provider.product_task_context_provider'
+            - 'descriptions'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.incorporate_product_attributes_to_long_description_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\IncorporateProductAttributesToDescriptionTask
+        arguments:
+            - '@oro_ai_content_generation.provider.product_task_context_provider'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.populate_landing_page_description_open_prompt_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\PopulateLandingPageDescriptionOpenPromptTask
+        arguments:
+            - '@translator'
+            - '@oro_ai_content_generation.entity_form_resolver'
+            - 'content'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.populate_content_block_description_open_prompt_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\PopulateContentBlockDescriptionOpenPromptTask
+        arguments:
+            - '@translator'
+            - '@oro_ai_content_generation.entity_form_resolver'
+            - 'content'
+        tags:
+            - { name: oro_ai_content_generation.task }
+
+    oro_ai_content_generation.generate_email_message_open_prompt_task:
+        class: Oro\Bundle\AiContentGenerationBundle\Task\GenerateEmailMessageOpenPromptTask
+        arguments:
+            - '@translator'
+            - 'body'
+        tags:
+            - { name: oro_ai_content_generation.task }

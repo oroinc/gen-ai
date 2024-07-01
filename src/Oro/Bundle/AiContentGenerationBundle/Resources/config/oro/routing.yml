@@ -1,0 +1,4 @@
+oro_ai_content_generation:
+    resource: "@OroAiContentGenerationBundle/Controller/AiContentGenerationController.php"
+    type: annotation
+    prefix: /ai-content-generation

@@ -1,0 +1,51 @@
+parameters:
+    oro_ai_content_generation.tones: [
+        'formal',
+        'casual',
+        'instructive',
+        'persuasive',
+        'humorous',
+        'professional',
+        'emotional',
+        'sarcastic',
+        'narrative',
+        'analytical',
+        'descriptive',
+        'informative',
+        'optimistic',
+        'cautious',
+        'reassuring',
+        'educational',
+        'dramatic',
+        'poetic',
+        'satirical'
+    ]
+
+services:
+    oro_ai_content_generation.form.extension.wysiwyg_extension:
+        class: Oro\Bundle\AiContentGenerationBundle\Form\Extension\AIGenerationWysiwygFormExtension
+        arguments:
+            - '@oro_ai_content_generation.provider.tasks_provider'
+        tags:
+            - { name: form.type_extension }
+            - { name: oro_featuretogle.feature, feature: oro_ai_content_generation }
+
+    oro_ai_content_generation.form.extension.oro_rich_text_extension:
+        class: Oro\Bundle\AiContentGenerationBundle\Form\Extension\OroRichTextTypeExtension
+        arguments:
+            - '@assets.context'
+            - '@oro_ai_content_generation.provider.tasks_provider'
+        tags:
+            - { name: form.type_extension }
+            - { name: oro_featuretogle.feature, feature: oro_ai_content_generation }
+
+    oro_ai_content_generation.form.oro_ai_content_generation:
+        class: Oro\Bundle\AiContentGenerationBundle\Form\Type\AiContentGenerationFormType
+        arguments:
+            - '@oro_ai_content_generation.ai_client'
+            - '@oro_ai_content_generation.provider.tasks_provider'
+            - '@oro_ai_content_generation.factory.content_generation_request_factory'
+            - '@translator'
+            - '%oro_ai_content_generation.tones%'
+        tags:
+            - { name: form.type }

@@ -1,0 +1,6 @@
+dynamic-imports:
+    oroaicontentgeneration:
+        - oroaicontentgeneration/js/app/views/ai-content-dialog-widget-view
+    wysiwyg_plugins:
+        - oroaicontentgeneration/js/app/grapesjs/plugins/aigeneration-plugin
+        - oroaicontentgeneration/js/app/tinymce/wysiwyg-editor/wysiwyg-editor-view

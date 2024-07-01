@@ -1,0 +1,156 @@
+oro_ai_content_generation:
+    system_configuration:
+        group:
+            ai_content_generation.label: 'AI Content Generation'
+            ai_content_generation_settings.label: 'AI Content Generation Settings'
+        field:
+            enable_ai_content_generation:
+                label: 'Enable AI Content Generation'
+                tooltip: 'The feature should be enabled to be used for generation content with Content AI Generation.'
+            generator_type:
+                label: 'AI Generator'
+                tooltip: 'Shows active integrations for AI content generation. This AI Generator will be used to generate content. Ensure that you have enough credits on your AI Generator account to use it.'
+                warning.text: 'Be aware that data from your website will be used by a third party to generate content.'
+    form:
+        field:
+            task:
+                label: 'Task'
+                choices:
+                    correct_grammar:
+                        label: 'Correct grammar'
+                        generation_phrase: 'Correct grammar mistakes in content you are provided with'
+                    expand:
+                        label: 'Expand text'
+                        generation_phrase: 'Expand content you are provided with'
+                    extract_product_attributes:
+                        label: 'Extract product features from the description'
+                        generation_phrase: 'Extract product attributes from the description'
+                    incorporate_product_attributes_to_description:
+                        label: 'Make the description more specific by incorporating the product attributes into the description'
+                        generation_phrase: 'Make the description more specific by incorporating the product attributes into the description'
+                    populate_product_description_with_open_prompt:
+                        label: 'Generate product description with an open prompt'
+                        generation_phrase: 'Generate seo-optimized product description for online shop'
+                    populate_product_description:
+                        label: 'Generate description based on the title, sku and other attributes'
+                        generation_phrase: 'Generate seo-optimized product description for online shop'
+                    populate_short_description_from_long_description:
+                        label: 'Populate short description based on the description'
+                        generation_phrase: 'Shorten and simplify product description you are provided with'
+                    shorten:
+                        label: 'Shorten text'
+                        generation_phrase: 'Shorten content you are provided with'
+                    manual_prompt:
+                        label: 'Generate content with custom provided prompt'
+                        generation_phrase: 'Generate content based on provided context'
+                    populate_content_block_description_with_open_prompt:
+                        label: 'Content block description generation'
+                        generation_phrase: 'Generate seo optimized content block description for online shop'
+                    generate_email_message_with_open_prompt:
+                        label: 'Email text generation'
+                        generation_phrase: 'Generate email text for online b2b shop. Write the data in the text format'
+                    populate_landing_page_description_with_open_prompt:
+                        label: 'Landing page content generation'
+                        generation_phrase: 'Generate article for online shop'
+            tone:
+                label: 'Text tone'
+                choices:
+                    formal.label: 'Formal'
+                    casual.label: 'Casual'
+                    conversational.label: 'Conversational'
+                    instructive.label: 'Instructive'
+                    persuasive.label: 'Persuasive'
+                    humorous.label: 'Humorous'
+                    professional.label: 'Professional'
+                    emotional.label: 'Emotional'
+                    sarcastic.label: 'Sarcastic'
+                    narrative.label: 'Narrative'
+                    analytical.label: 'Analytical'
+                    descriptive.label: 'Descriptive'
+                    informative.label: 'Informative'
+                    optimistic.label: 'Optimistic'
+                    cautious.label: 'Cautious'
+                    reassuring.label: 'Reassuring'
+                    educational.label: 'Educational'
+                    dramatic.label: 'Dramatic'
+                    poetic.label: 'Poetic'
+                    satirical.label: 'Satirical'
+            content_size:
+                label: 'Content size'
+                choices:
+                    small.label: 'Small, up to 500 characters'
+                    medium.label: 'Mid, up to 1000 characters'
+                    large.label: 'Large, up to 2500 characters'
+            content:
+                label: 'Keywords and Features'
+                tooltip: 'Fill up this field with value that can help AI Content Generator to create content better'
+            preview:
+                label: 'Content preview'
+                tooltip: 'Generated content by AI Content Generator'
+        context:
+            global:
+                features.label: 'Features'
+                value.label: 'Value'
+            product:
+                description.label: 'Description'
+                attributes.label: 'Attributes'
+                name.label: 'Name'
+                keywords.label: 'Keywords'
+                sku.label: 'Sku'
+                category_title.label: 'Category title'
+                brand_name.label: 'Brand'
+            landing_page:
+                page_title.label: 'Page title'
+                meta_keywords.label: 'Meta Keywords'
+            content_block:
+                title.label: 'Content Block title'
+            email:
+                goal.label: 'Goal'
+        button:
+            generate_again.label: 'Generate again'
+            generate.label: 'Generate'
+            confirm.label: 'Add content'
+        error.label: 'An error occurred during Content AI Generation request. See details in log'
+    integration:
+        check_connection:
+            open_ai.button: 'Check Open AI connection'
+            vertex_ai.button: 'Check Vertex AI connection'
+            result.success.message: 'Connection established successfully'
+            result.error.message: 'Connection could not be established'
+        open_ai:
+            channel_type:
+                label: 'Open AI'
+            settings:
+                label: 'Open AI Transport Settings'
+                labels:
+                    label: 'Label'
+                    tooltip: 'This label will be displayed as a choice of AI Generator selector in the System Configuration.'
+                token:
+                    label: 'Token'
+                    tooltip: 'Generate this value on the page <a href="https://platform.openai.com/account/api-keys" target="_blank">OpenAI API keys</a>.'
+                model:
+                    label: 'Model'
+                    tooltip: 'The model which will generate the result.'
+        vertex_ai:
+            channel_type:
+                label: 'Vertex AI'
+            settings:
+                label: 'Vertex AI Transport Settings'
+                labels:
+                    label: 'Label'
+                    tooltip: 'This label will be displayed as a choice of AI Generator selector in the System Configuration.'
+                config_file:
+                    label: 'Config file'
+                    tooltip: 'Upload here google service account json config file. Ensure that all needed permissions are added to that account.'
+                api_endpoint:
+                    label: 'API Endpoint'
+                    tooltip: 'Use the Endpoint value from the VertexAI text playground.'
+                project_id:
+                    label: 'Project ID'
+                    tooltip: 'Use the ProjectID value from the VertexAI text playground.'
+                location:
+                    label: 'Location'
+                    tooltip: 'Use the Location value from the VertexAI text playground.'
+                model:
+                    label: 'Model'
+                    tooltip: 'The model which will generate the result.'
