@@ -12,7 +12,7 @@ use Oro\Bundle\SecurityBundle\DoctrineExtension\Dbal\Types\CryptedStringType;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
- * Open AI settings entity. Stores basic configuration options for Open AI Integration
+ * OpenAI settings entity. Stores basic configuration options for Open AI Integration
  */
 #[ORM\Entity]
 class OpenAiTransportSettings extends Transport

@@ -44,7 +44,7 @@ final class OpenAiTransportSettingsTest extends TestCase
 
     public function testGetSettingsBag(): void
     {
-        $labels = new ArrayCollection([(new LocalizedFallbackValue())->setString('Open AI')]);
+        $labels = new ArrayCollection([(new LocalizedFallbackValue())->setString('OpenAI')]);
 
         /** @var OpenAiTransportSettings $entity */
         $entity = $this->getEntity(

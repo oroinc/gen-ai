@@ -40,6 +40,6 @@ class ContentGenerationOpenAiClientMock implements ContentGenerationClientInterf
             );
         }
 
-        return 'Generated content by Open AI';
+        return 'Generated content by OpenAI';
     }
 }

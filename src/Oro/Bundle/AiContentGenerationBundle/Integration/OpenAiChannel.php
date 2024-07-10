@@ -6,7 +6,7 @@ use Oro\Bundle\IntegrationBundle\Provider\ChannelInterface;
 use Oro\Bundle\IntegrationBundle\Provider\IconAwareIntegrationInterface;
 
 /**
- * Open AI integration channel.
+ * OpenAI integration channel.
  */
 class OpenAiChannel implements ChannelInterface, IconAwareIntegrationInterface
 {
