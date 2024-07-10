@@ -10,7 +10,7 @@ oro_behat_extension:
             paths:
                 - '@OroAiContentGenerationBundle/Tests/Behat/Features'
     elements:
-        Open AI Integration Form:
+        OpenAI Integration Form:
             selector: "form[id^='oro_integration_channel_form-uid']"
             class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
             options:

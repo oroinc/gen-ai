@@ -18,7 +18,7 @@ class LoadAiContentGenerationSettingsData extends AbstractFixture implements Fix
         [
             'reference' => 'open_ai_transport',
             'type' => OpenAiChannel::TYPE,
-            'label' => 'Open AI',
+            'label' => 'OpenAI',
             'token' => 'encrypted token',
         ],
         [

@@ -15,7 +15,7 @@ class LoadAiContentGenerationChannelData extends AbstractFixture implements Depe
 {
     private const array CHANNEL_DATA = [
         [
-            'name' => 'Open AI',
+            'name' => 'OpenAI',
             'type' => OpenAiChannel::TYPE,
             'enabled' => true,
             'transport' => 'open_ai_transport',

@@ -113,15 +113,15 @@ oro_ai_content_generation:
         error.label: 'An error occurred during Content AI Generation request. See details in log'
     integration:
         check_connection:
-            open_ai.button: 'Check Open AI connection'
+            open_ai.button: 'Check OpenAI connection'
             vertex_ai.button: 'Check Vertex AI connection'
             result.success.message: 'Connection established successfully'
             result.error.message: 'Connection could not be established'
         open_ai:
             channel_type:
-                label: 'Open AI'
+                label: 'OpenAI'
             settings:
-                label: 'Open AI Transport Settings'
+                label: 'OpenAI Transport Settings'
                 labels:
                     label: 'Label'
                     tooltip: 'This label will be displayed as a choice of AI Generator selector in the System Configuration.'
@@ -144,13 +144,13 @@ oro_ai_content_generation:
                     tooltip: 'Upload here google service account json config file. Ensure that all needed permissions are added to that account.'
                 api_endpoint:
                     label: 'API Endpoint'
-                    tooltip: 'Use the Endpoint value from the VertexAI text playground.'
+                    tooltip: 'Use the Endpoint value from the Vertex AI text playground.'
                 project_id:
                     label: 'Project ID'
-                    tooltip: 'Use the ProjectID value from the VertexAI text playground.'
+                    tooltip: 'Use the ProjectID value from the Vertex AI text playground.'
                 location:
                     label: 'Location'
-                    tooltip: 'Use the Location value from the VertexAI text playground.'
+                    tooltip: 'Use the Location value from the Vertex AI text playground.'
                 model:
                     label: 'Model'
                     tooltip: 'The model which will generate the result.'

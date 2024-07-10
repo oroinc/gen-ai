@@ -8,7 +8,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 
 /**
- * Basic Open AI integration transport configuration.
+ * Basic OpenAI integration transport configuration.
  */
 class OpenAiTransport implements TransportInterface
 {
