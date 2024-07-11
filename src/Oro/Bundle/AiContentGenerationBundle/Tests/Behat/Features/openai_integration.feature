@@ -2,49 +2,49 @@
 @behat-test-env
 @feature-BB-24021
 
-Feature: Open AI Integration
+Feature: OpenAI Integration
 
-  Scenario: Check Open AI Integration validation rules
+  Scenario: Check OpenAI Integration validation rules
     Given I login as administrator
     And I go to System/Integrations/Manage Integrations
     When I click "Create Integration"
-    And I fill "Open AI Integration Form" with:
-      | Type | Open AI |
+    And I fill "OpenAI Integration Form" with:
+      | Type | OpenAI |
     Then Model field should has "gpt-3.5-turbo" value
-    When I click "Check Open AI connection"
-    Then I should see "Open AI Integration Form" validation errors:
+    When I click "Check OpenAI connection"
+    Then I should see "OpenAI Integration Form" validation errors:
       | Name  | This value should not be blank. |
       | Label | This value should not be blank. |
       | Token | This value should not be blank. |
     And I reload the page
-    When I fill "Open AI Integration Form" with:
-      | Type | Open AI |
+    When I fill "OpenAI Integration Form" with:
+      | Type | OpenAI |
     And I save form
-    Then I should see "Open AI Integration Form" validation errors:
+    Then I should see "OpenAI Integration Form" validation errors:
       | Name  | This value should not be blank. |
       | Label | This value should not be blank. |
       | Token | This value should not be blank. |
 
-  Scenario: Check Open AI Integration connection
-    Given I fill "Open AI Integration Form" with:
-      | Name  | Open AI     |
-      | Label | Open AI     |
+  Scenario: Check OpenAI Integration connection
+    Given I fill "OpenAI Integration Form" with:
+      | Name  | OpenAI     |
+      | Label | OpenAI     |
       | Token | Wrong token |
     When I save form
     Then I should see "Integration saved" flash message
-    When I click "Check Open AI connection"
+    When I click "Check OpenAI connection"
     Then I should see "Connection could not be established" flash message
-    And I fill "Open AI Integration Form" with:
+    And I fill "OpenAI Integration Form" with:
       | Token | Correct token |
     And I save form
-    When I click "Check Open AI connection"
+    When I click "Check OpenAI connection"
     Then I should see "Connection established successfully" flash message
 
-  Scenario: Check Open AI Integration on the grid
+  Scenario: Check OpenAI Integration on the grid
     Given I click "Cancel"
     Then I should see following grid:
       | Name    | Type    | Status |
-      | Open AI | Open AI | Active |
+      | OpenAI | OpenAI | Active |
 
   Scenario: Enable WYSIWYG Editor
     Given I set configuration property "oro_form.wysiwyg_enabled" to "1"
@@ -68,7 +68,7 @@ Feature: Open AI Integration
     And I save form
     Then I should see "AI Generator"
     And I fill "System Config Form" with:
-      | AI Generator | Open AI |
+      | AI Generator | OpenAI |
     And I save form
 
   Scenario: Check Open AI Powered Content Assistant button is visible for Wysiwyg editor
@@ -110,16 +110,16 @@ Feature: Open AI Integration
       | Keywords and Features | Test text |
       | Text tone             | Casual    |
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And Keywords and Features field is empty
 
     And I fill "AI Powered Content Assistant Popup Form" with:
       | Keywords and Features | Test text |
     When I click "Generate again"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And Keywords and Features field is empty
     When I click "Add content"
-    Then Description field should has "Generated content by Open AI" value
+    Then Description field should has "Generated content by OpenAI" value
 
   Scenario: Check available tasks when description is not empty for Wysiwyg editor
     Given I click "Open AI Powered Content Assistant"
@@ -129,7 +129,7 @@ Feature: Open AI Integration
       | Shorten text                                 |
       | Generate content with custom provided prompt |
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And I should see "Generate again"
     And I click "Cancel" in modal window
     And I click "Cancel"
@@ -172,13 +172,13 @@ Feature: Open AI Integration
       | Keywords and Features | Test text |
       | Text tone             | Casual    |
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And Keywords and Features field is empty
 
     And I fill "AI Powered Content Assistant Popup Form" with:
       | Keywords and Features | Test text |
     When I click "Generate again"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And Keywords and Features field is empty
     When I click "Add content"
 
@@ -196,7 +196,7 @@ Feature: Open AI Integration
       | Task | Landing page content generation |
     Then Keywords and Features field should has "Page title Test page" value
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And I should see "Generate again"
     And I click "Cancel" in modal window
     And I click "Cancel"
@@ -211,7 +211,7 @@ Feature: Open AI Integration
     And I fill "AI Powered Content Assistant Popup Form" with:
       | Keywords and Features | Test text |
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And Keywords and Features field is empty
     And I click "Add content"
 
@@ -231,7 +231,7 @@ Feature: Open AI Integration
       | Task | Content block description generation |
     Then Keywords and Features field should has "Content block title Test Title" value
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And I click "Cancel" in modal window
     And I click "Cancel"
 
@@ -245,7 +245,7 @@ Feature: Open AI Integration
     And I fill "AI Powered Content Assistant Popup Form" with:
       | Keywords and Features | Test text |
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And Keywords and Features field is empty
     And I click "Add content"
 
@@ -264,7 +264,7 @@ Feature: Open AI Integration
       | Task | Email text generation |
     Then Keywords and Features field should has "Goal Test Subject" value
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And I click "Add content"
     And I click "Cancel" in modal window
 
@@ -280,7 +280,7 @@ Feature: Open AI Integration
       | Task                  | Generate content with custom provided prompt     |
       | Keywords and Features | Test text                                        |
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And I click "Add content"
 
     When I click "AI Powered Content Assistant"
@@ -290,7 +290,7 @@ Feature: Open AI Integration
     And I fill "AI Powered Content Assistant Popup Form" with:
       | Keywords and Features | Test text |
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And I click "Add content"
 
   Scenario: Check generation content with predefined content for Product
@@ -310,7 +310,7 @@ Feature: Open AI Integration
       | Task | Generate product description with an open prompt |
     Then Keywords and Features field should has "Name Product Name, sku A005" value
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value
     And I should see "Generate again"
     And I click "Cancel" in modal window
 
@@ -324,4 +324,4 @@ Feature: Open AI Integration
       | Extract product features from the description       |
       | Generate product description with an open prompt    |
     When I click "Generate"
-    Then Content preview field should has "Generated content by Open AI" value
+    Then Content preview field should has "Generated content by OpenAI" value

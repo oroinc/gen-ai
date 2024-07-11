@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Form provides field to set basic Open AI Integration settings.
+ * Form provides field to set basic OpenAI Integration settings.
  */
 class OpenAiTransportSettingsType extends AbstractType
 {

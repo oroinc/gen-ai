@@ -10,7 +10,7 @@ use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
- * Open AI settings entity. Stores basic configuration options for Open AI Integration
+ * OpenAI settings entity. Stores basic configuration options for Open AI Integration
  *
  * @ORM\Entity
  */
