@@ -7,7 +7,6 @@ use Oro\Bundle\AiContentGenerationBundle\Exception\ContentGenerationClientExcept
 use Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationRequestFactory;
 use Oro\Bundle\AiContentGenerationBundle\Form\Type\AiContentGenerationFormType;
 use Oro\Bundle\AiContentGenerationBundle\Provider\TasksProvider;
-use Oro\Bundle\AiContentGenerationBundle\Request\ContentGenerationRequest;
 use Oro\Bundle\AiContentGenerationBundle\Task\OpenPromptTaskInterface;
 use Oro\Bundle\AiContentGenerationBundle\Task\TaskInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -212,16 +211,6 @@ final class AiContentGenerationFormTypeTest extends FormIntegrationTestCase
 
     public function testThatFormHasPreview(): void
     {
-        $this->contentGenerationClient
-            ->expects(self::once())
-            ->method('generateTextContent')
-            ->willReturn('generated content');
-
-        $this->requestFactory
-            ->expects(self::once())
-            ->method('getRequest')
-            ->willReturn(new ContentGenerationRequest('', [], ''));
-
         $form = $this->factory->create(
             $this->formType::class,
             [
@@ -237,54 +226,7 @@ final class AiContentGenerationFormTypeTest extends FormIntegrationTestCase
             'content_size' => 'size'
         ]);
 
-        $data = $form->getData();
-
-        self::assertEquals('generated content', $data['preview']);
-    }
-
-    public function testThatFormHasErrorWhenClientFailed(): void
-    {
-        $exception = new ContentGenerationClientException('Client failed');
-
-        $this->contentGenerationClient
-            ->expects(self::once())
-            ->method('generateTextContent')
-            ->willThrowException($exception);
-
-        $this->requestFactory
-            ->expects(self::once())
-            ->method('getRequest')
-            ->willReturn(new ContentGenerationRequest('', [], ''));
-
-        $this->logger
-            ->expects(self::once())
-            ->method('error')
-            ->with('AI Content Generation Client error occurred', ['exception' => $exception]);
-
-        $this->translator
-            ->expects(self::once())
-            ->method('trans')
-            ->willReturn('Form error label');
-
-        $form = $this->factory->create(
-            $this->formType::class,
-            [
-                'source_form_submitted_form_data' => [],
-                'source_form_submitted_form_name' => 'form_name',
-                'source_form_submitted_form_field' => 'field_name'
-            ]
-        );
-
-        $form->submit([
-            'task' => 'key',
-            'tone' => 'User selected tone',
-            'content_size' => 'size'
-        ]);
-
-        self::assertEquals(
-            'Form error label',
-            $form->getErrors()->current()->getMessage()
-        );
+        self::assertFormContainsField('preview', $form);
     }
 
     protected function getExtensions(): array

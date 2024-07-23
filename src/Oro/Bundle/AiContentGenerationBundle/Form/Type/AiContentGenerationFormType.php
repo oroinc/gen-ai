@@ -151,29 +151,6 @@ class AiContentGenerationFormType extends AbstractType implements LoggerAwareInt
                 'tooltip' => 'oro_ai_content_generation.form.field.preview.tooltip',
             ]
         );
-
-        $data = $formEvent->getData();
-
-        $task = $this->tasksProvider->getTask($data['task']);
-
-        try {
-            $generatedResponse = $this->contentGenerationClient->generateTextContent(
-                $this->contentGenerationRequestFactory->getRequest(
-                    $task,
-                    [
-                        'tone' => $data['tone'],
-                        'content_size' => $data['content_size'] ?? null
-                    ]
-                )
-            );
-        } catch (ContentGenerationClientException $exception) {
-            $this->addFormError($formEvent->getForm(), $exception);
-            return;
-        }
-
-        $data['preview'] = $generatedResponse;
-
-        $formEvent->setData($data);
     }
 
     public function getBlockPrefix(): string

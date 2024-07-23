@@ -41,4 +41,27 @@ final class UserContentGenerationRequestTest extends TestCase
         self::assertEquals('', $request->getSubmittedFormField());
         self::assertEquals([], $request->getSubmittedContentGenerationFormData());
     }
+
+    public function testThatFromRenderRequestMergesFormData(): void
+    {
+        $request = UserContentGenerationRequest::fromRenderRequest([
+            'submitted_form_name' => 'form_name',
+            'submitted_form_field' => 'field',
+            'submitted_form_data' => [
+                'option' => 'value',
+                'source_form_submitted_form_data' => json_encode(['note' => true])
+            ]
+        ]);
+
+        self::assertEquals('form_name', $request->getSubmittedFormName());
+        self::assertEquals(
+            [
+                'option' => 'value',
+                'note' => true,
+                'source_form_submitted_form_data' => json_encode(['note' => true])
+            ],
+            $request->getSubmittedFormData()
+        );
+        self::assertEquals('field', $request->getSubmittedFormField());
+    }
 }

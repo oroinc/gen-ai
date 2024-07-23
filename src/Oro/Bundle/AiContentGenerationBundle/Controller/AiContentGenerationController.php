@@ -4,6 +4,7 @@ namespace Oro\Bundle\AiContentGenerationBundle\Controller;
 
 use Oro\Bundle\AiContentGenerationBundle\Exception\ContentGenerationClientException;
 use Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationClientFactory;
+use Oro\Bundle\AiContentGenerationBundle\Form\Handler\AiContentGenerationFormHandler;
 use Oro\Bundle\AiContentGenerationBundle\Form\Type\AiContentGenerationFormType;
 use Oro\Bundle\AiContentGenerationBundle\Provider\TasksProvider;
 use Oro\Bundle\AiContentGenerationBundle\Request\UserContentGenerationRequest;
@@ -43,19 +44,19 @@ class AiContentGenerationController extends AbstractController
 
             return new JsonResponse([
                 'success' => true,
-                'message' => $this->container->get(TranslatorInterface::class)->trans(
+                'message' => $this->getTranslator()->trans(
                     'oro_ai_content_generation.integration.check_connection.result.success.message'
                 ),
             ]);
         } catch (ContentGenerationClientException $exception) {
-            $this->container->get(LoggerInterface::class)->warning(
+            $this->getLogger()->warning(
                 'AI Content Generation Client connection error occurred',
                 ['exception' => $exception]
             );
 
             return new JsonResponse([
                 'success' => false,
-                'message' => $this->container->get(TranslatorInterface::class)->trans(
+                'message' => $this->getTranslator()->trans(
                     'oro_ai_content_generation.integration.check_connection.result.error.message'
                 )
             ]);
@@ -97,9 +98,14 @@ class AiContentGenerationController extends AbstractController
 
         $form->handleRequest($request);
 
+        if ($form->isValid()) {
+            $generatedText = $this->getFormHandler()->handle($form);
+        }
+
         return [
             'saved' => $form->isSubmitted() && $form->isValid(),
             'form' => $form->createView(),
+            'generatedText' => $generatedText ?? null,
             'form_route' => 'oro_ai_content_generation_update'
         ];
     }
@@ -122,6 +128,7 @@ class AiContentGenerationController extends AbstractController
         return array_merge(parent::getSubscribedServices(), [
             'oro_ai_content_generation.provider.tasks_provider' => '?'.TasksProvider::class,
             'oro_ai_content_generation.factory.ai_client_factory' => '?'.ContentGenerationClientFactory::class,
+            'oro_ai_content_generation.form.handler' => '?'.AiContentGenerationFormHandler::class,
             TranslatorInterface::class,
             LoggerInterface::class,
         ]);
@@ -135,5 +142,20 @@ class AiContentGenerationController extends AbstractController
     private function getTasksProvider(): TasksProvider
     {
         return $this->container->get('oro_ai_content_generation.provider.tasks_provider');
+    }
+
+    private function getFormHandler(): AiContentGenerationFormHandler
+    {
+        return $this->container->get('oro_ai_content_generation.form.handler');
+    }
+
+    private function getTranslator(): TranslatorInterface
+    {
+        return $this->container->get(TranslatorInterface::class);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->container->get(LoggerInterface::class);
     }
 }

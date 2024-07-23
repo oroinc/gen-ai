@@ -8,7 +8,6 @@ use Oro\Bundle\AiContentGenerationBundle\Client\ContentGenerationVertexAiClient;
 use Oro\Bundle\AiContentGenerationBundle\Exception\ContentGenerationClientException;
 use Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationVertexAiClientFactory;
 use Oro\Bundle\AiContentGenerationBundle\Integration\VertexAiChannel;
-use Oro\Component\MessageQueue\Util\JSON;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -41,7 +40,7 @@ final class ContentGenerationVertexAiClientFactoryTest extends TestCase
 
     public function testThatClientReturned(): void
     {
-        $parameterBag = new ParameterBag(['config_file' => JSON::encode('config')]);
+        $parameterBag = new ParameterBag(['config_file' => json_encode('config')]);
 
         $this->googleClient
             ->expects(self::once())
@@ -74,7 +73,7 @@ final class ContentGenerationVertexAiClientFactoryTest extends TestCase
     public function testThatClientFailedWhenFetchAccessTokenWithAssertion(): void
     {
         $exception = new \ErrorException('Original exception message');
-        $parameterBag = new ParameterBag(['config_file' => JSON::encode('config')]);
+        $parameterBag = new ParameterBag(['config_file' => json_encode('config')]);
 
         $this->googleClient
             ->expects(self::once())
