@@ -13,6 +13,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class EntityFormResolver
 {
+    private array $resolved = [];
+
     public function __construct(
         private readonly FormFactoryInterface $formFactory,
         private readonly TokenStorageInterface $tokenStorage
@@ -41,10 +43,18 @@ class EntityFormResolver
 
     private function submitEntity(string $formTypeClass, object $entity, array $entityData): object
     {
+        $cacheKey = base64_encode(serialize($entityData));
+
+        if (isset($this->resolved[$cacheKey])) {
+            return $this->resolved[$cacheKey];
+        }
+
         $form = $this->formFactory->create($formTypeClass, $entity);
 
         $form->submit($entityData);
 
-        return $form->getData();
+        $this->resolved[$cacheKey] = $form->getData();
+
+        return $this->resolved[$cacheKey];
     }
 }

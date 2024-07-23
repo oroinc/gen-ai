@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\AiContentGenerationBundle\Request;
 
-use Oro\Component\MessageQueue\Util\JSON;
-
 /**
  * Holds information from the user form request needed for task processing
  */
@@ -24,9 +22,7 @@ readonly class UserContentGenerationRequest
         if (isset($submittedFormData['source_form_submitted_form_data'])) {
             $requestData['submitted_form_data'] = array_merge(
                 $requestData['submitted_form_data'],
-                JSON::decode(
-                    $submittedFormData['source_form_submitted_form_data']
-                )
+                json_decode($submittedFormData['source_form_submitted_form_data'], true)
             );
         }
 
@@ -42,7 +38,7 @@ readonly class UserContentGenerationRequest
     {
         return new self(
             $formData['source_form_submitted_form_name'] ?? '',
-            JSON::decode($formData['source_form_submitted_form_data'] ?? []),
+            $formData['source_form_submitted_form_data'] ?? [],
             $formData['source_form_submitted_form_field'] ?? '',
             $formData
         );

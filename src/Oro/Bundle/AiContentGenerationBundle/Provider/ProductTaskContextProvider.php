@@ -30,11 +30,7 @@ class ProductTaskContextProvider
         /**
          * @var Product $product
          */
-        $product = $this->entityFormResolver->resolve(
-            ProductType::class,
-            new Product(),
-            $contentGenerationRequest->getSubmittedFormData()
-        );
+        $product = $this->resolveProduct($contentGenerationRequest);
 
         $localization = $this->localizationProvider->getLocalizationFromSubmittedField(
             ProductType::NAME,
@@ -78,11 +74,7 @@ class ProductTaskContextProvider
         /**
          * @var Product $product
          */
-        $product = $this->entityFormResolver->resolve(
-            ProductType::class,
-            new Product(),
-            $contentGenerationRequest->getSubmittedFormData()
-        );
+        $product = $this->resolveProduct($contentGenerationRequest);
 
         $localization = $this->localizationProvider->getLocalizationFromSubmittedField(
             ProductType::NAME,
@@ -122,5 +114,14 @@ class ProductTaskContextProvider
         ];
 
         return array_filter($contextItems, fn (ContextItem $contextItem) => $contextItem->getValue());
+    }
+
+    private function resolveProduct(UserContentGenerationRequest $userContentGenerationRequest): Product
+    {
+        return $this->entityFormResolver->resolve(
+            ProductType::class,
+            new Product(),
+            $userContentGenerationRequest->getSubmittedFormData()
+        );
     }
 }

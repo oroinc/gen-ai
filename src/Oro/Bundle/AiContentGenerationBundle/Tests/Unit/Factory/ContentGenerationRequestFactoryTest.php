@@ -11,14 +11,11 @@ use Oro\Bundle\AiContentGenerationBundle\Task\TaskInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ContentGenerationRequestFactoryTest extends TestCase
 {
     private TranslatorInterface&MockObject $translator;
-
-    private RequestStack&MockObject $requestStack;
 
     private ContentGenerationClientInterface&MockObject $contentGenerationClient;
 
@@ -26,19 +23,15 @@ final class ContentGenerationRequestFactoryTest extends TestCase
 
     private ContentGenerationRequestFactory $factory;
 
-    private Request&MockObject $request;
-
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
-        $this->requestStack = $this->createMock(RequestStack::class);
         $this->contentGenerationClient = $this->createMock(ContentGenerationClientInterface::class);
         $this->charactersAmounts = ['short' => 100, 'medium' => 200, 'long' => 400];
         $this->request = $this->createMock(Request::class);
 
         $this->factory = new ContentGenerationRequestFactory(
             $this->translator,
-            $this->requestStack,
             $this->contentGenerationClient,
             $this->charactersAmounts
         );
@@ -61,22 +54,12 @@ final class ContentGenerationRequestFactoryTest extends TestCase
     public function testThatRequestReturned(): void
     {
         $task = $this->createMock(TaskInterface::class);
-        $parameters = ['tone' => 'formal'];
-
-        $request = new Request(
-            request: [
-                'oro_ai_content_generation' => [
-                    'source_form_submitted_form_name' => 'form_name',
-                    'source_form_submitted_form_data' => json_encode([]),
-                    'source_form_submitted_form_field' => 'form_field',
-                ]
-            ]
-        );
-
-        $this->requestStack
-            ->expects(self::once())
-            ->method('getCurrentRequest')
-            ->willReturn($request);
+        $parameters = [
+            'tone' => 'formal',
+            'source_form_submitted_form_name' => 'form_name',
+            'source_form_submitted_form_data' => [],
+            'source_form_submitted_form_field' => 'form_field',
+        ];
 
         $task
             ->expects(self::once())
@@ -118,22 +101,13 @@ final class ContentGenerationRequestFactoryTest extends TestCase
             ->method('getContext')
             ->willReturn([new ContextItem('key', 'value')]);
 
-        $parameters = ['tone' => 'formal', 'content_size' => 'short'];
-
-        $request = new Request(
-            request: [
-                'oro_ai_content_generation' => [
-                    'source_form_submitted_form_name' => 'form_name',
-                    'source_form_submitted_form_data' => json_encode([]),
-                    'source_form_submitted_form_field' => 'form_field',
-                ]
-            ]
-        );
-
-        $this->requestStack
-            ->expects(self::once())
-            ->method('getCurrentRequest')
-            ->willReturn($request);
+        $parameters = [
+            'tone' => 'formal',
+            'content_size' => 'short',
+            'source_form_submitted_form_name' => 'form_name',
+            'source_form_submitted_form_data' => [],
+            'source_form_submitted_form_field' => 'form_field',
+        ];
 
         $task
             ->expects(self::once())
@@ -167,22 +141,13 @@ final class ContentGenerationRequestFactoryTest extends TestCase
             ->method('getContext')
             ->willReturn([new ContextItem('key', 'value')]);
 
-        $parameters = ['tone' => 'formal', 'content_size' => 'unsupported'];
-
-        $request = new Request(
-            request: [
-                'oro_ai_content_generation' => [
-                    'source_form_submitted_form_name' => 'form_name',
-                    'source_form_submitted_form_data' => json_encode([]),
-                    'source_form_submitted_form_field' => 'form_field',
-                ]
-            ]
-        );
-
-        $this->requestStack
-            ->expects(self::once())
-            ->method('getCurrentRequest')
-            ->willReturn($request);
+        $parameters = [
+            'tone' => 'formal',
+            'content_size' => 'unsupported',
+            'source_form_submitted_form_name' => 'form_name',
+            'source_form_submitted_form_data' => [],
+            'source_form_submitted_form_field' => 'form_field',
+        ];
 
         $task
             ->expects(self::once())

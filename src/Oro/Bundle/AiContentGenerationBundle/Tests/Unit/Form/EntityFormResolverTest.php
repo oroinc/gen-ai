@@ -55,6 +55,9 @@ final class EntityFormResolverTest extends TestCase
             ->method('getData')
             ->willReturn($entity);
 
+        $this->entityFormResolver->resolve($formTypeClass, $entity, $entityData);
+
+        //ensure entity object cached
         $result = $this->entityFormResolver->resolve($formTypeClass, $entity, $entityData);
 
         self::assertSame($entity, $result);

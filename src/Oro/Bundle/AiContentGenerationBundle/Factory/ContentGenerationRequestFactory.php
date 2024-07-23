@@ -4,11 +4,9 @@ namespace Oro\Bundle\AiContentGenerationBundle\Factory;
 
 use Oro\Bundle\AiContentGenerationBundle\Client\ContentGenerationClientInterface;
 use Oro\Bundle\AiContentGenerationBundle\Exception\ContentGenerationClientException;
-use Oro\Bundle\AiContentGenerationBundle\Form\Type\AiContentGenerationFormType;
 use Oro\Bundle\AiContentGenerationBundle\Request\ContentGenerationRequest;
 use Oro\Bundle\AiContentGenerationBundle\Request\UserContentGenerationRequest;
 use Oro\Bundle\AiContentGenerationBundle\Task\TaskInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -20,7 +18,6 @@ class ContentGenerationRequestFactory
 
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly RequestStack $requestStack,
         private readonly ContentGenerationClientInterface $contentGenerationClient,
         private array $charactersAmounts
     ) {
@@ -28,7 +25,7 @@ class ContentGenerationRequestFactory
 
     public function getRequest(TaskInterface $task, array $parameters): ContentGenerationRequest
     {
-        $context = $this->getContext($task);
+        $context = $this->getContext($task, $parameters);
 
         if (!$context) {
             throw new ContentGenerationClientException('Task context should be provided for generation');
@@ -68,12 +65,9 @@ class ContentGenerationRequestFactory
         return $charactersAmount / self::CHARACTERS_IN_TOKEN;
     }
 
-    private function getContext(TaskInterface $task): array
+    private function getContext(TaskInterface $task, array $parameters): array
     {
-        $requestData = $this->requestStack->getCurrentRequest()?->request?->all();
-        $userContentGenerationRequest = UserContentGenerationRequest::fromSubmitRequest(
-            $requestData[AiContentGenerationFormType::BLOCK_PREFIX] ?? []
-        );
+        $userContentGenerationRequest = UserContentGenerationRequest::fromSubmitRequest($parameters);
 
         $contextLines = [];
 

@@ -1,4 +1,5 @@
 import DialogWidget from 'oro/dialog-widget';
+import LoadingMask from 'oroui/js/app/views/loading-mask-view';
 import tools from 'oroui/js/tools';
 import __ from 'orotranslation/js/translator';
 import _ from 'underscore';
@@ -99,9 +100,16 @@ const AiContentDialogWidgetView = DialogWidget.extend({
         const contentEl = this.$el.find(`[data-ftid=${this.formOptions.contentSelectorFtid}]`);
         const contentElContainer = contentEl.closest('.control-group');
         const isRelated = this.openPromptTasks.includes($(event.target).val());
+        const task = this.$el.find(`[data-ftid=${this.formOptions.taskSelectorFtid}]`).val();
 
         contentEl.attr({disabled: !isRelated});
         contentElContainer.attr({hidden: !isRelated});
+
+        if (this.previouslySelectedTask === task) {
+            return;
+        }
+
+        this.previouslySelectedTask = task;
 
         if (!isRelated) {
             return;
@@ -112,15 +120,17 @@ const AiContentDialogWidgetView = DialogWidget.extend({
             this.$el.find(`[data-ftid=${this.formOptions.contentSelectorFtid}]`).attr('name')
         );
 
-        renderingFormData.task = this.$el.find(`[data-ftid=${this.formOptions.taskSelectorFtid}]`).val();
+        this.subview('contentLoadingMask', new LoadingMask({
+            container: this.widget.dialog('instance').uiDialog
+        }));
+        this.subview('contentLoadingMask').show();
 
-        if (this.previouslySelectedTask === renderingFormData.task) {
-            return;
-        }
+        renderingFormData.task = task;
 
-        $.post(url, $.param((renderingFormData))).then(data => contentEl.val(data.content));
-
-        this.previouslySelectedTask = renderingFormData.task;
+        $.post(url, $.param((renderingFormData))).then(data => {
+            contentEl.val(data.content);
+            this.subview('contentLoadingMask').hide();
+        });
     },
 
     prepareRenderingFormData(fieldName) {

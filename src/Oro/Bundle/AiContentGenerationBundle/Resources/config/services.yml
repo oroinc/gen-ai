@@ -64,6 +64,17 @@ services:
     Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationClientFactory:
         alias: oro_ai_content_generation.factory.ai_client_factory
 
+    Oro\Bundle\AiContentGenerationBundle\Form\Handler\AiContentGenerationFormHandler:
+        alias: oro_ai_content_generation.form.handler
+
+    oro_ai_content_generation.form.handler:
+        class: Oro\Bundle\AiContentGenerationBundle\Form\Handler\AiContentGenerationFormHandler
+        arguments:
+            - '@oro_ai_content_generation.provider.tasks_provider'
+            - '@oro_ai_content_generation.ai_client'
+            - '@oro_ai_content_generation.factory.content_generation_request_factory'
+            - '@translator'
+
     oro_ai_content_generation.provider.extend_configs_provider:
         class: Oro\Bundle\AiContentGenerationBundle\Provider\ExtendConfigsProvider
         arguments:
@@ -110,7 +121,6 @@ services:
         class: Oro\Bundle\AiContentGenerationBundle\Factory\ContentGenerationRequestFactory
         arguments:
             - '@translator'
-            - '@request_stack'
             - '@oro_ai_content_generation.ai_client'
             - '%oro_ai_content_generation.characters_amounts%'
 
