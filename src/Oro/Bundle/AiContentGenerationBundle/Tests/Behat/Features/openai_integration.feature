@@ -325,3 +325,14 @@ Feature: OpenAI Integration
       | Generate product description with an open prompt    |
     When I click "Generate"
     Then Content preview field should has "Generated content by OpenAI" value
+    And I click "Cancel" in modal window
+
+  Scenario: Check that form reloaded when error occurred
+    Given click "Open AI-Powered Content Assistant"
+    When I fill "AI-Powered Content Assistant Popup Form" with:
+      | Task | Generate product description with an open prompt |
+    And I fill "AI-Powered Content Assistant Popup Form" with:
+      | Keywords and Features | |
+    And I click "Generate"
+    Then I should see "AI-Powered Content Assistant Popup Form" validation errors:
+      | Keywords and Features  | This value should not be blank. |

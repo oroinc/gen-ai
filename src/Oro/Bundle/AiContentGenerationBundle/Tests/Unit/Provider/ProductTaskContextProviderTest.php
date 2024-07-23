@@ -12,7 +12,6 @@ use Oro\Bundle\CatalogBundle\Entity\Category;
 use Oro\Bundle\CatalogBundle\Entity\CategoryTitle;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\ProductBundle\Entity\ProductDescription;
 use Oro\Bundle\ProductBundle\Entity\ProductName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -47,7 +46,6 @@ final class ProductTaskContextProviderTest extends TestCase
 
     public function testGetDescription(): void
     {
-        $description = $this->createMock(ProductDescription::class);
         $product = $this->getMockBuilder(Product::class)->addMethods(['getDescription'])->getMock();
         $contentGenerationRequest = new UserContentGenerationRequest(
             '',

@@ -28,9 +28,7 @@
 
         {{- form_start(form, form_options) -}}
 
-        {% if not form.vars.errors|length %}
-
-            <div class="form-horizontal">
+        <div class="form-horizontal">
                 {{- form_row(form.task) -}}
                 {% if form.content is defined %}
                     {{- form_row(form.content, {'attr': {'style': 'width: 100%'}}) -}}
@@ -44,7 +42,7 @@
                     </div>
                 {% endif %}
                 {% if saved %}
-                    {{- form_row(form.preview) -}}
+                    {{- form_row(form.preview, {value: generatedText}) -}}
                 {% endif %}
                 <div class="widget-actions form-buttons">
                     <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
@@ -64,8 +62,6 @@
                     {% endif %}
                 </div>
             </div>
-
-        {% endif %}
 
         <div class="hide">
             {{- form_rest(form) -}}

@@ -8,7 +8,6 @@ use Oro\Bundle\AiContentGenerationBundle\Client\ContentGenerationClientInterface
 use Oro\Bundle\AiContentGenerationBundle\Client\ContentGenerationVertexAiClient;
 use Oro\Bundle\AiContentGenerationBundle\Entity\VertexAiTransportSettings;
 use Oro\Bundle\AiContentGenerationBundle\Exception\ContentGenerationClientException;
-use Oro\Component\MessageQueue\Util\JSON;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -63,7 +62,7 @@ class ContentGenerationVertexAiClientFactory implements ContentGenerationClientF
         $this->googleClient->setScopes($this->cloudPlatformScopes);
 
         try {
-            $this->googleClient->setAuthConfig(JSON::decode($authConfig));
+            $this->googleClient->setAuthConfig(json_decode($authConfig, true));
 
             $tokenId = $this->googleClient->fetchAccessTokenWithAssertion();
         } catch (\ErrorException $exception) {

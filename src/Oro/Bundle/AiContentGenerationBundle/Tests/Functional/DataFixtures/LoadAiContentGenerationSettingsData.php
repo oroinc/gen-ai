@@ -10,7 +10,6 @@ use Oro\Bundle\AiContentGenerationBundle\Entity\VertexAiTransportSettings;
 use Oro\Bundle\AiContentGenerationBundle\Integration\OpenAiChannel;
 use Oro\Bundle\AiContentGenerationBundle\Integration\VertexAiChannel;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
-use Oro\Component\MessageQueue\Util\JSON;
 
 class LoadAiContentGenerationSettingsData extends AbstractFixture implements FixtureInterface
 {
@@ -42,7 +41,7 @@ class LoadAiContentGenerationSettingsData extends AbstractFixture implements Fix
                 $entity->setToken($data['token']);
             } else {
                 $entity = new VertexAiTransportSettings();
-                $entity->setConfigFile(JSON::encode($data['configFile']));
+                $entity->setConfigFile(json_encode($data['configFile']));
                 $entity->setApiEndpoint($data['apiEndpoint']);
                 $entity->setProjectId($data['projectId']);
             }
