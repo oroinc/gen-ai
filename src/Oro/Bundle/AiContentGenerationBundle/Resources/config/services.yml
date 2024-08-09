@@ -55,6 +55,8 @@ services:
             - '@oro_config.manager'
             - '@doctrine'
             - !tagged_iterator oro_ai_content_generation.client_factory
+        tags:
+            - { name: oro_featuretogle.feature, feature: oro_ai_content_generation }
 
     oro_ai_content_generation.ai_client:
         class: Oro\Bundle\AiContentGenerationBundle\Client\ContentGenerationClientInterface
