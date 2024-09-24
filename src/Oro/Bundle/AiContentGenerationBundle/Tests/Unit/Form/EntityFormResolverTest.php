@@ -24,6 +24,7 @@ final class EntityFormResolverTest extends TestCase
 
     private EntityFormResolver$entityFormResolver;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->formFactory = $this->createMock(FormFactoryInterface::class);

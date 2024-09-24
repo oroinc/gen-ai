@@ -25,6 +25,7 @@ final class ContentGenerationVertexAiClientTest extends TestCase
 
     private ContentGenerationRequest $request;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->httpClient = $this->createMock(ClientInterface::class);

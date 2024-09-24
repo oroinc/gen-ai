@@ -17,6 +17,7 @@ final class IncorporateProductAttributesToDescriptionTaskTest extends TestCase
 
     private UserContentGenerationRequest $request;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->taskContextProvider = $this->createMock(ProductTaskContextProvider::class);

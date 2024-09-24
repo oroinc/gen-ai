@@ -17,6 +17,7 @@ class IncorporateProductAttributesToDescriptionTask extends AbstractProductTask 
         parent::__construct($productContextProvider, $longDescriptionPluralForm);
     }
 
+    #[\Override]
     public function supports(UserContentGenerationRequest $contentGenerationRequest): bool
     {
         if (!parent::supports($contentGenerationRequest)) {

@@ -39,6 +39,7 @@ final class AiContentGenerationFormTypeTest extends FormIntegrationTestCase
 
     private AiContentGenerationFormType $formType;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->contentGenerationClient = $this->createMock(ContentGenerationClientInterface::class);
@@ -229,6 +230,7 @@ final class AiContentGenerationFormTypeTest extends FormIntegrationTestCase
         self::assertFormContainsField('preview', $form);
     }
 
+    #[\Override]
     protected function getExtensions(): array
     {
         $translator = $this->createMock(Translator::class);

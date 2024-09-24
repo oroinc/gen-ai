@@ -39,6 +39,7 @@ final class VertexAiTransportSettingsTypeTest extends FormIntegrationTestCase
 
     private ContentFileDataTransformer|MockObject $modelDataTransformer;
 
+    #[\Override]
     protected function getExtensions(): array
     {
         $this->modelDataTransformer = $this->createMock(ContentFileDataTransformer::class);

@@ -30,9 +30,7 @@ class LoadAiContentGenerationSettingsData extends AbstractFixture implements Fix
         ]
     ];
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         foreach (self::TRANSPORTS as $data) {

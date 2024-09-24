@@ -40,6 +40,7 @@ final class ExtendConfigsProviderTest extends TestCase
 
     private Brand&MockObject $brand;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->extendConfigProvider = $this->createMock(ConfigProvider::class);

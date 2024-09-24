@@ -36,6 +36,7 @@ final class AiContentGenerationFormHandlerTest extends TestCase
 
     private LoggerInterface&MockObject $logger;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->tasksProvider = $this->createMock(TasksProvider::class);

@@ -123,6 +123,7 @@ class AiContentGenerationController extends AbstractController
         return new JsonResponse(compact('content'));
     }
 
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [

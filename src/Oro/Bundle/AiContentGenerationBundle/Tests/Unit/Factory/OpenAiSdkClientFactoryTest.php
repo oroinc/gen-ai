@@ -11,6 +11,7 @@ final class OpenAiSdkClientFactoryTest extends TestCase
 {
     private OpenAiSdkClientFactory $sdkFactory;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->sdkFactory = new OpenAiSdkClientFactory();

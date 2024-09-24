@@ -21,11 +21,13 @@ class AIGenerationWysiwygFormExtension extends AbstractTypeExtension implements 
     {
     }
 
+    #[\Override]
     public static function getExtendedTypes(): iterable
     {
         return [WYSIWYGType::class];
     }
 
+    #[\Override]
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         if (!$this->isFeaturesEnabled()) {

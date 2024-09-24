@@ -17,9 +17,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class VertexAiTransportSettingsType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -69,9 +67,7 @@ class VertexAiTransportSettingsType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -79,9 +75,7 @@ class VertexAiTransportSettingsType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'oro_vertex_ai_settings';

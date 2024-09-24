@@ -17,6 +17,7 @@ final class ContentGenerationOpenAiClientFactoryTest extends TestCase
 
     private OpenAiSdkClientFactory&MockObject $openAiSdkClientFactory;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->openAiSdkClientFactory  = $this->createMock(OpenAiSdkClientFactory::class);

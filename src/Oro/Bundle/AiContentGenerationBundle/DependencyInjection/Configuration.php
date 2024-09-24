@@ -17,9 +17,7 @@ class Configuration implements ConfigurationInterface
     public const ENABLE_AI_CONTENT_GENERATION_KEY = 'enable_ai_content_generation';
     public const GENERATOR_TYPE_KEY = 'generator_type';
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder(self::ROOT_NODE);

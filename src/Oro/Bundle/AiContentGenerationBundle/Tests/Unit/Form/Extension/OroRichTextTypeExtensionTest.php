@@ -22,6 +22,7 @@ final class OroRichTextTypeExtensionTest extends FormIntegrationTestCase
 
     private TasksProvider&MockObject $tasksProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->context = $this->createMock(ContextInterface::class);
@@ -79,6 +80,7 @@ final class OroRichTextTypeExtensionTest extends FormIntegrationTestCase
         ];
     }
 
+    #[\Override]
     protected function getExtensions(): array
     {
         return [
@@ -91,6 +93,7 @@ final class OroRichTextTypeExtensionTest extends FormIntegrationTestCase
         ];
     }
 
+    #[\Override]
     protected function getTypeExtensions(): array
     {
         $richTextExtension = new OroRichTextTypeExtension(

@@ -30,9 +30,7 @@ class LoadAiContentGenerationChannelData extends AbstractFixture implements Depe
         ],
     ];
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [
@@ -42,9 +40,7 @@ class LoadAiContentGenerationChannelData extends AbstractFixture implements Depe
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         foreach (self::CHANNEL_DATA as $data) {

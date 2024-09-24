@@ -17,6 +17,7 @@ final class ManualPromptTaskTest extends TestCase
 
     private TranslatorInterface&MockObject $translator;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);

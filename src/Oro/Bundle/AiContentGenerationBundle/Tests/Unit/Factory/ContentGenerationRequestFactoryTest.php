@@ -23,6 +23,7 @@ final class ContentGenerationRequestFactoryTest extends TestCase
 
     private ContentGenerationRequestFactory $factory;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);

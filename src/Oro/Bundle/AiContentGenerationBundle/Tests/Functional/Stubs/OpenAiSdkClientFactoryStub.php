@@ -10,6 +10,7 @@ use Oro\Bundle\AiContentGenerationBundle\Factory\OpenAiSdkClientFactory;
 
 class OpenAiSdkClientFactoryStub extends OpenAiSdkClientFactory
 {
+    #[\Override]
     public function getSdkClient(string $token, ?string $organization = null): ClientContract
     {
         $fake = new ClientFake();

@@ -9,6 +9,7 @@ use Oro\Bundle\AiContentGenerationBundle\Request\UserContentGenerationRequest;
  */
 class ExtractProductAttributesTask extends AbstractProductTask implements TaskInterface
 {
+    #[\Override]
     public function supports(UserContentGenerationRequest $contentGenerationRequest): bool
     {
         if (!parent::supports($contentGenerationRequest)) {

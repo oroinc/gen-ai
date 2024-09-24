@@ -9,6 +9,7 @@ final class VertexAiChannelTest extends TestCase
 {
     private VertexAiChannel $channel;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->channel = new VertexAiChannel();

@@ -30,6 +30,7 @@ final class OpenAiTransportSettingsTypeTest extends FormIntegrationTestCase
 
     private const int LOCALIZATION_ID = 998;
 
+    #[\Override]
     protected function getExtensions(): array
     {
         $repositoryLocalization = $this->createMock(ObjectRepository::class);

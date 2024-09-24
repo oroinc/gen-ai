@@ -11,6 +11,7 @@ final class VertexAiTransportTest extends TestCase
 {
     private VertexAiTransport $transport;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->transport = new VertexAiTransport();

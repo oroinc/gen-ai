@@ -26,6 +26,7 @@ final class AIGenerationWysiwygFormExtensionTest extends FormIntegrationTestCase
 
     private TasksProvider&MockObject $tasksProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->digitalAssetTwigTagsConverter = $this->createMock(DigitalAssetTwigTagsConverter::class);
@@ -104,6 +105,7 @@ final class AIGenerationWysiwygFormExtensionTest extends FormIntegrationTestCase
         ];
     }
 
+    #[\Override]
     protected function getExtensions(): array
     {
         return [
@@ -116,6 +118,7 @@ final class AIGenerationWysiwygFormExtensionTest extends FormIntegrationTestCase
         ];
     }
 
+    #[\Override]
     protected function getTypeExtensions(): array
     {
         $aiWysiwygExtension = new AIGenerationWysiwygFormExtension(

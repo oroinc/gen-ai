@@ -20,6 +20,7 @@ final class ContentGenerationVertexAiClientFactoryTest extends TestCase
 
     private ClientInterface&MockObject $httpClient;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->googleClient = $this->createMock(Client::class);

@@ -141,6 +141,7 @@ class VertexAiTransportSettings extends Transport
         return $this;
     }
 
+    #[\Override]
     public function getSettingsBag(): ParameterBag
     {
         if (null === $this->settings) {

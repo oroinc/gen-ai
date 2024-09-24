@@ -8,6 +8,7 @@ use Oro\Bundle\AiContentGenerationBundle\Factory\OpenAiSdkClientFactory;
 
 class OpenAiSdkFailedClientFactoryStub extends OpenAiSdkClientFactory
 {
+    #[\Override]
     public function getSdkClient(string $token, ?string $organization = null): ClientContract
     {
         throw new ContentGenerationClientException('Connection is not stable');

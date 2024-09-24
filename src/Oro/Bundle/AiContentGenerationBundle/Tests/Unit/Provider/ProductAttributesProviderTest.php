@@ -41,6 +41,7 @@ final class ProductAttributesProviderTest extends TestCase
 
     private Brand&MockObject $brand;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityConfigProvider = $this->createMock(ConfigProvider::class);

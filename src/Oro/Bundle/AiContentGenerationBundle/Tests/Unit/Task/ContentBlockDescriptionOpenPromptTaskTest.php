@@ -21,6 +21,7 @@ final class ContentBlockDescriptionOpenPromptTaskTest extends TestCase
     private EntityFormResolver&MockObject $entityFormResolver;
     private UserContentGenerationRequest $request;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);

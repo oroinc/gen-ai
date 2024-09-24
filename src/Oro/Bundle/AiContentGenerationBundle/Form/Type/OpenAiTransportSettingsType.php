@@ -16,9 +16,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class OpenAiTransportSettingsType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -44,9 +42,7 @@ class OpenAiTransportSettingsType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -54,9 +50,7 @@ class OpenAiTransportSettingsType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'oro_open_ai_settings';

@@ -20,6 +20,7 @@ class PopulateProductDescriptionOpenPromptTask extends AbstractProductTask imple
         parent::__construct($productContextProvider, $pluralForm);
     }
 
+    #[\Override]
     public function supports(UserContentGenerationRequest $contentGenerationRequest): bool
     {
         if (!parent::supports($contentGenerationRequest)) {

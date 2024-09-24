@@ -12,20 +12,24 @@ use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
  */
 class VertexAiTransport implements TransportInterface
 {
+    #[\Override]
     public function init(Transport $transportEntity): void
     {
     }
 
+    #[\Override]
     public function getLabel(): string
     {
         return 'oro_ai_content_generation.integration.vertex_ai.settings.label';
     }
 
+    #[\Override]
     public function getSettingsFormType(): string
     {
         return VertexAiTransportSettingsType::class;
     }
 
+    #[\Override]
     public function getSettingsEntityFQCN(): string
     {
         return VertexAiTransportSettings::class;

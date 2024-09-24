@@ -15,6 +15,7 @@ final class ExtractProductAttributesTaskTest extends TestCase
 
     private ExtractProductAttributesTask $task;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->productContextProvider = $this->createMock(ProductTaskContextProvider::class);

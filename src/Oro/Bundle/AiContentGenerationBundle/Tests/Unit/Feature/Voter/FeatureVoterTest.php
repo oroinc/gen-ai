@@ -26,6 +26,7 @@ final class FeatureVoterTest extends TestCase
 
     private FeatureVoter $featureVoter;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->configManager = $this->createMock(ConfigManager::class);

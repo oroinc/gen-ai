@@ -28,6 +28,7 @@ class OroRichTextTypeExtension extends AbstractTypeExtension implements FeatureT
         return [OroRichTextType::class];
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         if (!$this->isFeaturesEnabled()) {

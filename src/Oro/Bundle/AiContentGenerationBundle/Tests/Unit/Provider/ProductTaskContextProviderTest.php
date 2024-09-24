@@ -29,6 +29,7 @@ final class ProductTaskContextProviderTest extends TestCase
 
     private ProductTaskContextProvider $productTaskContextProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityFormResolver = $this->createMock(EntityFormResolver::class);

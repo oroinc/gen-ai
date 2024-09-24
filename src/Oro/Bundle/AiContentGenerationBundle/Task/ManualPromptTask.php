@@ -16,16 +16,19 @@ class ManualPromptTask implements OpenPromptTaskInterface
     ) {
     }
 
+    #[\Override]
     public function supports(UserContentGenerationRequest $contentGenerationRequest): bool
     {
         return true;
     }
 
+    #[\Override]
     public function getFormPredefinedContent(UserContentGenerationRequest $contentGenerationRequest): array
     {
         return [];
     }
 
+    #[\Override]
     public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
     {
         return [

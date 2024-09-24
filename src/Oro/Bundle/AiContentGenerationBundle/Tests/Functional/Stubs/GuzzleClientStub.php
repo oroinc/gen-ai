@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class GuzzleClientStub extends Client
 {
+    #[\Override]
     public function request(string $method, $uri = '', array $options = []): ResponseInterface
     {
         return new Response();

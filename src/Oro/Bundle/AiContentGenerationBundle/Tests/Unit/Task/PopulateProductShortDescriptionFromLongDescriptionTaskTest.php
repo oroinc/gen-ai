@@ -17,6 +17,7 @@ final class PopulateProductShortDescriptionFromLongDescriptionTaskTest extends T
 
     private UserContentGenerationRequest $request;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->taskContextProvider = $this->createMock(ProductTaskContextProvider::class);

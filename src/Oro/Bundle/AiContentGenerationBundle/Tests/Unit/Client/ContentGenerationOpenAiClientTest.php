@@ -25,6 +25,7 @@ final class ContentGenerationOpenAiClientTest extends TestCase
 
     private ParameterBag $parameters;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->openAiClient = $this->createMock(ClientContract::class);

@@ -21,6 +21,7 @@ final class TasksProviderTest extends TestCase
 
     private TasksProvider $tasksProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->task1 = $this->createMock(TaskInterface::class);

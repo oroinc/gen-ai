@@ -20,6 +20,7 @@ class PopulateProductShortDescriptionFromLongDescriptionTask extends AbstractPro
         parent::__construct($productContextProvider, self::SHORT_DESCRIPTION_FIELD_PLURAL_FORM);
     }
 
+    #[\Override]
     public function supports(UserContentGenerationRequest $contentGenerationRequest): bool
     {
         if (!parent::supports($contentGenerationRequest)) {

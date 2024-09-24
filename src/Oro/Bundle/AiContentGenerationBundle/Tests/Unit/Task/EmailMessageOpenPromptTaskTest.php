@@ -18,6 +18,7 @@ final class EmailMessageOpenPromptTaskTest extends TestCase
     private TranslatorInterface&MockObject $translator;
     private UserContentGenerationRequest $request;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);

@@ -43,6 +43,7 @@ class AiContentGenerationFormType extends AbstractType implements LoggerAwareInt
         $this->logger = new NullLogger();
     }
 
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetData']);
@@ -153,6 +154,7 @@ class AiContentGenerationFormType extends AbstractType implements LoggerAwareInt
         );
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return self::BLOCK_PREFIX;

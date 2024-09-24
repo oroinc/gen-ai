@@ -12,17 +12,13 @@ class VertexAiChannel implements ChannelInterface, IconAwareIntegrationInterface
 {
     public const string TYPE = 'vertex_ai';
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getLabel(): string
     {
         return 'oro_ai_content_generation.integration.vertex_ai.channel_type.label';
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getIcon(): string
     {
         return 'bundles/oroaicontentgeneration/img/vertex-ai-logo.png';

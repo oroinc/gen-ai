@@ -24,6 +24,7 @@ class FeatureVoter implements VoterInterface
     ) {
     }
 
+    #[\Override]
     public function vote($feature, $scopeIdentifier = null): int
     {
         if ($feature !== self::FEATURE_NAME || $this->isExcludedPage()) {

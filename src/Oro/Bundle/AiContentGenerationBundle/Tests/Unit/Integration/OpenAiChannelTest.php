@@ -9,6 +9,7 @@ final class OpenAiChannelTest extends TestCase
 {
     private OpenAiChannel $channel;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->channel = new OpenAiChannel();

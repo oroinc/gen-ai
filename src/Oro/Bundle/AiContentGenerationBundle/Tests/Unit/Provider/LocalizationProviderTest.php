@@ -17,6 +17,7 @@ final class LocalizationProviderTest extends TestCase
 
     private LocalizationProvider $localizationProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->registry = $this->createMock(ManagerRegistry::class);

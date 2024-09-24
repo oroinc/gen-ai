@@ -27,6 +27,7 @@ final class ContentGenerationClientFactoryTest extends TestCase
 
     private ContentGenerationClientFactory $factory;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->configManager = $this->createMock(ConfigManager::class);

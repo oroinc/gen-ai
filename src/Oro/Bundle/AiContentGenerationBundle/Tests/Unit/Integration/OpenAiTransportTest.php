@@ -11,6 +11,7 @@ final class OpenAiTransportTest extends TestCase
 {
     private OpenAiTransport $transport;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->transport = new OpenAiTransport();
