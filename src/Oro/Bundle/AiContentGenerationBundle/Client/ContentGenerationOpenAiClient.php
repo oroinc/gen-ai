@@ -26,7 +26,8 @@ class ContentGenerationOpenAiClient implements ContentGenerationClientInterface
     ) {
     }
 
-    #[\Override] public function generateTextContent(ContentGenerationRequest $request): string
+    #[\Override]
+    public function generateTextContent(ContentGenerationRequest $request): string
     {
         $this->executedRequests = 0;
 
@@ -57,14 +58,16 @@ class ContentGenerationOpenAiClient implements ContentGenerationClientInterface
         return $this->getResult($messages);
     }
 
-    #[\Override] public function checkConnection(): void
+    #[\Override]
+    public function checkConnection(): void
     {
         $this->executedRequests = 0;
 
         $this->doRequest([OpenAiMessage::fromSystem('Check connection')]);
     }
 
-    #[\Override] public function supportsUserContentSize(): bool
+    #[\Override]
+    public function supportsUserContentSize(): bool
     {
         return false;
     }

@@ -17,7 +17,8 @@ class GenerateEmailMessageOpenPromptTask implements OpenPromptTaskInterface
     ) {
     }
 
-    #[\Override] public function supports(UserContentGenerationRequest $contentGenerationRequest): bool
+    #[\Override]
+    public function supports(UserContentGenerationRequest $contentGenerationRequest): bool
     {
         if ($contentGenerationRequest->getSubmittedFormName() !== 'oro_email_email') {
             return false;
@@ -30,7 +31,8 @@ class GenerateEmailMessageOpenPromptTask implements OpenPromptTaskInterface
         return !empty($this->getFormPredefinedContent($contentGenerationRequest));
     }
 
-    #[\Override] public function getContentGenerationPhraseTranslationKey(): string
+    #[\Override]
+    public function getContentGenerationPhraseTranslationKey(): string
     {
         return sprintf(
             'oro_ai_content_generation.form.field.task.choices.%s.generation_phrase',
@@ -38,12 +40,14 @@ class GenerateEmailMessageOpenPromptTask implements OpenPromptTaskInterface
         );
     }
 
-    #[\Override] public function getKey(): string
+    #[\Override]
+    public function getKey(): string
     {
         return 'generate_email_message_with_open_prompt';
     }
 
-    #[\Override] public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
+    #[\Override]
+    public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
     {
         $content = $contentGenerationRequest->getSubmittedContentGenerationFormData()['content'];
 
@@ -59,7 +63,8 @@ class GenerateEmailMessageOpenPromptTask implements OpenPromptTaskInterface
         ];
     }
 
-    #[\Override] public function getFormPredefinedContent(UserContentGenerationRequest $contentGenerationRequest): array
+    #[\Override]
+    public function getFormPredefinedContent(UserContentGenerationRequest $contentGenerationRequest): array
     {
         $formData = $contentGenerationRequest->getSubmittedFormData();
 

@@ -30,12 +30,14 @@ class PopulateProductShortDescriptionFromLongDescriptionTask extends AbstractPro
         return (bool)$this->getContext($contentGenerationRequest);
     }
 
-    #[\Override] public function getKey(): string
+    #[\Override]
+    public function getKey(): string
     {
         return 'populate_short_description_from_long_description';
     }
 
-    #[\Override] public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
+    #[\Override]
+    public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
     {
         return array_filter([
             $this->productContextProvider->getDescription(

@@ -7,7 +7,8 @@ namespace Oro\Bundle\AiContentGenerationBundle\Task;
  */
 class CorrectGrammarTask extends AbstractSimpleTask implements TaskInterface
 {
-    #[\Override] public function getKey(): string
+    #[\Override]
+    public function getKey(): string
     {
         return 'correct_grammar';
     }

@@ -29,7 +29,8 @@ class ContentGenerationVertexAiClientFactory implements ContentGenerationClientF
     ) {
     }
 
-    #[\Override] public function build(ParameterBag $parameterBag): ContentGenerationClientInterface
+    #[\Override]
+    public function build(ParameterBag $parameterBag): ContentGenerationClientInterface
     {
         $authConfig = $parameterBag->get(VertexAiTransportSettings::CONFIG_FILE);
 
@@ -47,12 +48,14 @@ class ContentGenerationVertexAiClientFactory implements ContentGenerationClientF
         return new ContentGenerationVertexAiClient($this->httpClient, $parameterBag);
     }
 
-    #[\Override] public function addAdditionalParam(string $key, int|float|string|null $value): void
+    #[\Override]
+    public function addAdditionalParam(string $key, int|float|string|null $value): void
     {
         $this->additionalParameters[$key] = $value;
     }
 
-    #[\Override] public function supports(string $clientName): bool
+    #[\Override]
+    public function supports(string $clientName): bool
     {
         return ContentGenerationVertexAiClient::VERTEX_AI === $clientName;
     }

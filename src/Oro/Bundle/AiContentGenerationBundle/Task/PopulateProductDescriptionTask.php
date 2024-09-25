@@ -19,12 +19,14 @@ class PopulateProductDescriptionTask extends AbstractProductTask implements Task
         return !empty($this->getContext($contentGenerationRequest));
     }
 
-    #[\Override] public function getKey(): string
+    #[\Override]
+    public function getKey(): string
     {
         return 'populate_product_description';
     }
 
-    #[\Override] public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
+    #[\Override]
+    public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
     {
         return $this->productContextProvider->getFullContext(
             $contentGenerationRequest,

@@ -19,12 +19,14 @@ class ExtractProductAttributesTask extends AbstractProductTask implements TaskIn
         return !empty($this->getContext($contentGenerationRequest));
     }
 
-    #[\Override] public function getKey(): string
+    #[\Override]
+    public function getKey(): string
     {
         return 'extract_product_attributes';
     }
 
-    #[\Override] public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
+    #[\Override]
+    public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
     {
         return array_filter([
             $this->productContextProvider->getDescription($contentGenerationRequest, $this->pluralForm)

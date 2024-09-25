@@ -30,7 +30,8 @@ class PopulateProductDescriptionOpenPromptTask extends AbstractProductTask imple
         return !empty($this->getFormPredefinedContent($contentGenerationRequest));
     }
 
-    #[\Override] public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
+    #[\Override]
+    public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
     {
         $content = $contentGenerationRequest->getSubmittedContentGenerationFormData()['content'];
 
@@ -46,12 +47,14 @@ class PopulateProductDescriptionOpenPromptTask extends AbstractProductTask imple
         ];
     }
 
-    #[\Override] public function getKey(): string
+    #[\Override]
+    public function getKey(): string
     {
         return 'populate_product_description_with_open_prompt';
     }
 
-    #[\Override] public function getFormPredefinedContent(
+    #[\Override]
+    public function getFormPredefinedContent(
         UserContentGenerationRequest $contentGenerationRequest
     ): array {
         return $this->productContextProvider->getFullContext($contentGenerationRequest, $this->pluralForm);

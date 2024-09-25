@@ -29,12 +29,14 @@ class IncorporateProductAttributesToDescriptionTask extends AbstractProductTask 
         return count($contextItems) > 1;
     }
 
-    #[\Override] public function getKey(): string
+    #[\Override]
+    public function getKey(): string
     {
         return 'incorporate_product_attributes_to_description';
     }
 
-    #[\Override] public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
+    #[\Override]
+    public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
     {
         return array_filter([
             $this->productContextProvider->getDescription($contentGenerationRequest, $this->pluralForm),

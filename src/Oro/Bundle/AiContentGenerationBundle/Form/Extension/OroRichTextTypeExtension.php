@@ -23,7 +23,8 @@ class OroRichTextTypeExtension extends AbstractTypeExtension implements FeatureT
     ) {
     }
 
-    #[\Override] public static function getExtendedTypes(): iterable
+    #[\Override]
+    public static function getExtendedTypes(): iterable
     {
         return [OroRichTextType::class];
     }

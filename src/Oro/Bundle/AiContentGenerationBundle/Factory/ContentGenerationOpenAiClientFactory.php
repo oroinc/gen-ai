@@ -22,7 +22,8 @@ class ContentGenerationOpenAiClientFactory implements ContentGenerationClientFac
     ) {
     }
 
-    #[\Override] public function build(ParameterBag $parameterBag): ContentGenerationClientInterface
+    #[\Override]
+    public function build(ParameterBag $parameterBag): ContentGenerationClientInterface
     {
         if ($this->maxIterations < 1) {
             $this->throwContentGenerationClientException('OpenAI Max Iterations parameter should be greater than 0.');
@@ -43,12 +44,14 @@ class ContentGenerationOpenAiClientFactory implements ContentGenerationClientFac
         );
     }
 
-    #[\Override] public function addAdditionalParam(string $key, float|int|string|null $value): void
+    #[\Override]
+    public function addAdditionalParam(string $key, float|int|string|null $value): void
     {
         $this->additionalParameters[$key] = $value;
     }
 
-    #[\Override] public function supports(string $clientName): bool
+    #[\Override]
+    public function supports(string $clientName): bool
     {
         return ContentGenerationOpenAiClient::OPEN_AI === $clientName;
     }

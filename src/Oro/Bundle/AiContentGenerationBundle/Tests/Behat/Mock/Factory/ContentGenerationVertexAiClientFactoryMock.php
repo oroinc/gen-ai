@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ContentGenerationVertexAiClientFactoryMock extends ContentGenerationVertexAiClientFactory
 {
-    #[\Override] public function build(ParameterBag $parameterBag): ContentGenerationClientInterface
+    #[\Override]
+    public function build(ParameterBag $parameterBag): ContentGenerationClientInterface
     {
         return new ContentGenerationVertexAiClientMock($parameterBag);
     }

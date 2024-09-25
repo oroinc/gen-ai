@@ -21,7 +21,8 @@ class PopulateLandingPageDescriptionOpenPromptTask implements OpenPromptTaskInte
     ) {
     }
 
-    #[\Override] public function supports(UserContentGenerationRequest $contentGenerationRequest): bool
+    #[\Override]
+    public function supports(UserContentGenerationRequest $contentGenerationRequest): bool
     {
         if ($contentGenerationRequest->getSubmittedFormName() !== PageType::NAME) {
             return false;
@@ -34,7 +35,8 @@ class PopulateLandingPageDescriptionOpenPromptTask implements OpenPromptTaskInte
         return !empty($this->getFormPredefinedContent($contentGenerationRequest));
     }
 
-    #[\Override] public function getContentGenerationPhraseTranslationKey(): string
+    #[\Override]
+    public function getContentGenerationPhraseTranslationKey(): string
     {
         return sprintf(
             'oro_ai_content_generation.form.field.task.choices.%s.generation_phrase',
@@ -42,12 +44,14 @@ class PopulateLandingPageDescriptionOpenPromptTask implements OpenPromptTaskInte
         );
     }
 
-    #[\Override] public function getKey(): string
+    #[\Override]
+    public function getKey(): string
     {
         return 'populate_landing_page_description_with_open_prompt';
     }
 
-    #[\Override] public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
+    #[\Override]
+    public function getContext(UserContentGenerationRequest $contentGenerationRequest): array
     {
         $content = $contentGenerationRequest->getSubmittedContentGenerationFormData()['content'];
 
@@ -63,7 +67,8 @@ class PopulateLandingPageDescriptionOpenPromptTask implements OpenPromptTaskInte
         ];
     }
 
-    #[\Override] public function getFormPredefinedContent(UserContentGenerationRequest $contentGenerationRequest): array
+    #[\Override]
+    public function getFormPredefinedContent(UserContentGenerationRequest $contentGenerationRequest): array
     {
         $contextItems = [];
 

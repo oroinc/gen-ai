@@ -25,7 +25,8 @@ class ContentGenerationVertexAiClient implements ContentGenerationClientInterfac
     ) {
     }
 
-    #[\Override] public function generateTextContent(ContentGenerationRequest $request): string
+    #[\Override]
+    public function generateTextContent(ContentGenerationRequest $request): string
     {
         return $this->processRequest(function () use ($request) {
             $response = $this->httpClient->request(
@@ -43,7 +44,8 @@ class ContentGenerationVertexAiClient implements ContentGenerationClientInterfac
         });
     }
 
-    #[\Override] public function checkConnection(): void
+    #[\Override]
+    public function checkConnection(): void
     {
         $this->processRequest(function () {
             $this->httpClient->request(
@@ -63,7 +65,8 @@ class ContentGenerationVertexAiClient implements ContentGenerationClientInterfac
         });
     }
 
-    #[\Override] public function supportsUserContentSize(): bool
+    #[\Override]
+    public function supportsUserContentSize(): bool
     {
         return true;
     }

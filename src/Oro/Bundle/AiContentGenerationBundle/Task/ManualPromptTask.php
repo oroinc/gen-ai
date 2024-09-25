@@ -39,12 +39,14 @@ class ManualPromptTask implements OpenPromptTaskInterface
         ];
     }
 
-    #[\Override] public function getContentGenerationPhraseTranslationKey(): string
+    #[\Override]
+    public function getContentGenerationPhraseTranslationKey(): string
     {
         return 'oro_ai_content_generation.form.field.task.choices.manual_prompt.generation_phrase';
     }
 
-    #[\Override] public function getKey(): string
+    #[\Override]
+    public function getKey(): string
     {
         return 'manual_prompt';
     }
