@@ -3,8 +3,8 @@
 namespace Oro\Bundle\AiContentGenerationBundle\Provider;
 
 use Oro\Bundle\AiContentGenerationBundle\Context\ContextItem;
-use Oro\Bundle\AiContentGenerationBundle\Form\EntityFormResolver;
 use Oro\Bundle\AiContentGenerationBundle\Request\UserContentGenerationRequest;
+use Oro\Bundle\FormBundle\Resolver\EntityFormResolverInterface;
 use Oro\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\ProductBundle\Form\Type\ProductType;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -15,7 +15,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ProductTaskContextProvider
 {
     public function __construct(
-        private readonly EntityFormResolver $entityFormResolver,
+        private readonly EntityFormResolverInterface $entityFormResolver,
         private readonly LocalizationProvider $localizationProvider,
         private readonly TranslatorInterface $translator,
         private readonly ProductAttributesProvider $productAttributesProvider

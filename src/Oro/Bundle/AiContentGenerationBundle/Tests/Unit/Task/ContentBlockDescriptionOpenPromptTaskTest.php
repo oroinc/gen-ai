@@ -3,12 +3,12 @@
 namespace Oro\Bundle\AiContentGenerationBundle\Tests\Unit\Task;
 
 use Oro\Bundle\AiContentGenerationBundle\Context\ContextItem;
-use Oro\Bundle\AiContentGenerationBundle\Form\EntityFormResolver;
 use Oro\Bundle\AiContentGenerationBundle\Request\UserContentGenerationRequest;
 use Oro\Bundle\AiContentGenerationBundle\Task\PopulateContentBlockDescriptionOpenPromptTask;
 use Oro\Bundle\CMSBundle\Entity\ContentBlock;
 use Oro\Bundle\CMSBundle\Form\Type\ContentBlockType;
 use Oro\Bundle\CMSBundle\Tests\Unit\Entity\Stub\ContentBlock as ContentBlockStub;
+use Oro\Bundle\FormBundle\Resolver\EntityFormResolverInterface;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -18,14 +18,14 @@ final class ContentBlockDescriptionOpenPromptTaskTest extends TestCase
 {
     private PopulateContentBlockDescriptionOpenPromptTask $contentBlockTask;
     private TranslatorInterface&MockObject $translator;
-    private EntityFormResolver&MockObject $entityFormResolver;
+    private EntityFormResolverInterface&MockObject $entityFormResolver;
     private UserContentGenerationRequest $request;
 
     #[\Override]
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
-        $this->entityFormResolver = $this->createMock(EntityFormResolver::class);
+        $this->entityFormResolver = $this->createMock(EntityFormResolverInterface::class);
 
         $this->contentBlockTask = new PopulateContentBlockDescriptionOpenPromptTask(
             $this->translator,
@@ -38,7 +38,7 @@ final class ContentBlockDescriptionOpenPromptTaskTest extends TestCase
             [],
             '[plural]',
             [
-                'content' => 'user sent content'
+                'content' => 'user sent content',
             ],
         );
     }

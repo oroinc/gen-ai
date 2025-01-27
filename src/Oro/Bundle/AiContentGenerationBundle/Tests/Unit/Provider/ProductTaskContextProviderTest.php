@@ -3,13 +3,13 @@
 namespace Oro\Bundle\AiContentGenerationBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\AiContentGenerationBundle\Context\ContextItem;
-use Oro\Bundle\AiContentGenerationBundle\Form\EntityFormResolver;
 use Oro\Bundle\AiContentGenerationBundle\Provider\LocalizationProvider;
 use Oro\Bundle\AiContentGenerationBundle\Provider\ProductAttributesProvider;
 use Oro\Bundle\AiContentGenerationBundle\Provider\ProductTaskContextProvider;
 use Oro\Bundle\AiContentGenerationBundle\Request\UserContentGenerationRequest;
 use Oro\Bundle\CatalogBundle\Entity\Category;
 use Oro\Bundle\CatalogBundle\Entity\CategoryTitle;
+use Oro\Bundle\FormBundle\Resolver\EntityFormResolverInterface;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\ProductBundle\Entity\ProductName;
@@ -19,7 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductTaskContextProviderTest extends TestCase
 {
-    private EntityFormResolver&MockObject $entityFormResolver;
+    private EntityFormResolverInterface&MockObject $entityFormResolver;
 
     private LocalizationProvider&MockObject $localizationProvider;
 
@@ -32,7 +32,7 @@ final class ProductTaskContextProviderTest extends TestCase
     #[\Override]
     protected function setUp(): void
     {
-        $this->entityFormResolver = $this->createMock(EntityFormResolver::class);
+        $this->entityFormResolver = $this->createMock(EntityFormResolverInterface::class);
         $this->localizationProvider = $this->createMock(LocalizationProvider::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->productAttributesProvider = $this->createMock(ProductAttributesProvider::class);

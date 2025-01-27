@@ -4,12 +4,12 @@ namespace Oro\Bundle\AiContentGenerationBundle\Tests\Unit\Task;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\AiContentGenerationBundle\Context\ContextItem;
-use Oro\Bundle\AiContentGenerationBundle\Form\EntityFormResolver;
 use Oro\Bundle\AiContentGenerationBundle\Request\UserContentGenerationRequest;
 use Oro\Bundle\AiContentGenerationBundle\Task\PopulateLandingPageDescriptionOpenPromptTask;
 use Oro\Bundle\AiContentGenerationBundle\Tests\Unit\Stub\Page as PageStub;
 use Oro\Bundle\CMSBundle\Entity\Page;
 use Oro\Bundle\CMSBundle\Form\Type\PageType;
+use Oro\Bundle\FormBundle\Resolver\EntityFormResolverInterface;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -19,14 +19,14 @@ final class LandingPageDescriptionOpenPromptTaskTest extends TestCase
 {
     private PopulateLandingPageDescriptionOpenPromptTask $landingPageTask;
     private TranslatorInterface&MockObject $translator;
-    private EntityFormResolver&MockObject $entityFormResolver;
+    private EntityFormResolverInterface&MockObject $entityFormResolver;
     private UserContentGenerationRequest $request;
 
     #[\Override]
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
-        $this->entityFormResolver = $this->createMock(EntityFormResolver::class);
+        $this->entityFormResolver = $this->createMock(EntityFormResolverInterface::class);
 
         $this->landingPageTask = new PopulateLandingPageDescriptionOpenPromptTask(
             $this->translator,

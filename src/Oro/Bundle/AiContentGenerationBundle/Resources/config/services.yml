@@ -97,16 +97,10 @@ services:
         arguments:
             - '@doctrine'
 
-    oro_ai_content_generation.entity_form_resolver:
-        class: Oro\Bundle\AiContentGenerationBundle\Form\EntityFormResolver
-        arguments:
-            - '@form.factory'
-            - '@security.token_storage'
-
     oro_ai_content_generation.provider.product_task_context_provider:
         class: Oro\Bundle\AiContentGenerationBundle\Provider\ProductTaskContextProvider
         arguments:
-            - '@oro_ai_content_generation.entity_form_resolver'
+            - '@oro_form.entity_form_resolver'
             - '@oro_ai_content_generation.provider.localization_provider'
             - '@translator'
             - '@oro_ai_content_generation.provider.product_attributes_provider'

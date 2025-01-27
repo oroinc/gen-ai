@@ -100,7 +100,7 @@ services:
         class: Oro\Bundle\AiContentGenerationBundle\Task\PopulateLandingPageDescriptionOpenPromptTask
         arguments:
             - '@translator'
-            - '@oro_ai_content_generation.entity_form_resolver'
+            - '@oro_form.entity_form_resolver'
             - 'content'
         tags:
             - { name: oro_ai_content_generation.task }
@@ -109,7 +109,7 @@ services:
         class: Oro\Bundle\AiContentGenerationBundle\Task\PopulateContentBlockDescriptionOpenPromptTask
         arguments:
             - '@translator'
-            - '@oro_ai_content_generation.entity_form_resolver'
+            - '@oro_form.entity_form_resolver'
             - 'content'
         tags:
             - { name: oro_ai_content_generation.task }

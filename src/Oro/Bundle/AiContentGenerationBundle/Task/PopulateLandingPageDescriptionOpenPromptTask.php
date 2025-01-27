@@ -3,10 +3,10 @@
 namespace Oro\Bundle\AiContentGenerationBundle\Task;
 
 use Oro\Bundle\AiContentGenerationBundle\Context\ContextItem;
-use Oro\Bundle\AiContentGenerationBundle\Form\EntityFormResolver;
 use Oro\Bundle\AiContentGenerationBundle\Request\UserContentGenerationRequest;
 use Oro\Bundle\CMSBundle\Entity\Page;
 use Oro\Bundle\CMSBundle\Form\Type\PageType;
+use Oro\Bundle\FormBundle\Resolver\EntityFormResolverInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -16,7 +16,7 @@ class PopulateLandingPageDescriptionOpenPromptTask implements OpenPromptTaskInte
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly EntityFormResolver $entityFormResolver,
+        private readonly EntityFormResolverInterface $entityFormResolver,
         private string $supportedFieldName
     ) {
     }
