@@ -20,7 +20,7 @@ class OpenAiTransportSettings extends Transport
     public const TOKEN = 'token';
     public const MODEL = 'model';
 
-    public const DEFAULT_MODEL = 'gpt-3.5-turbo';
+    public const DEFAULT_MODEL = 'gpt-4o-mini';
 
     /**
       * @var Collection<int, LocalizedFallbackValue>
