@@ -32,7 +32,7 @@ class AiContentGenerationController extends AbstractController
     )]
     #[ParamConverter('channel', class: Channel::class, options: ['id' => 'channelId'])]
     #[CsrfProtection()]
-    public function validateConnectionAction(Request $request, Channel $channel = null): JsonResponse
+    public function validateConnectionAction(Request $request, ?Channel $channel = null): JsonResponse
     {
         try {
             $channel = $channel ?? new Channel();

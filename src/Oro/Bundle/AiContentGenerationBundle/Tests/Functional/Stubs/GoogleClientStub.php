@@ -8,7 +8,7 @@ use GuzzleHttp\ClientInterface;
 class GoogleClientStub extends Client
 {
     #[\Override]
-    public function fetchAccessTokenWithAssertion(ClientInterface $authHttp = null): array
+    public function fetchAccessTokenWithAssertion(?ClientInterface $authHttp = null): array
     {
         return ['access_token' => 'token'];
     }

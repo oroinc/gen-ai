@@ -25,7 +25,7 @@ class ProductTaskContextProvider
     public function getDescription(
         UserContentGenerationRequest $contentGenerationRequest,
         string $submittedFormFieldPluralForm,
-        string $localizedFormFieldPluralForm = null
+        ?string $localizedFormFieldPluralForm = null
     ): ?ContextItem {
         /**
          * @var Product $product
