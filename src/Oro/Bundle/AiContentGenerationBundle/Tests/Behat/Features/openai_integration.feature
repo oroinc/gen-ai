@@ -10,7 +10,7 @@ Feature: OpenAI Integration
     When I click "Create Integration"
     And I fill "OpenAI Integration Form" with:
       | Type | OpenAI |
-    Then Model field should has "gpt-3.5-turbo" value
+    Then Model field should has "gpt-4o-mini" value
     When I click "Check OpenAI connection"
     Then I should see "OpenAI Integration Form" validation errors:
       | Name  | This value should not be blank. |
