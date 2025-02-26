@@ -140,7 +140,7 @@ Feature: OpenAI Integration
     Then I should see an "AI-Powered Content Assistant" element
 
   Scenario: Check generation content without predefined content for Landing Page
-    Given I click "AI-Powered Content Assistant"
+    Given I click on "AI-Powered Content Assistant"
     Then Keywords and Features field is empty
     And I should see the following options for "Task" select:
       | Generate content with custom provided prompt |
@@ -185,7 +185,7 @@ Feature: OpenAI Integration
   Scenario: Check generation content with predefined content for Landing Page
     Given I fill in Landing Page Titles field with "Test page"
     And I click "OpenBlocksTab"
-    When I click "AI-Powered Content Assistant"
+    When I click on "AI-Powered Content Assistant"
     Then I should see the following options for "Task" select:
       | Correct grammar                              |
       | Expand text                                  |
@@ -205,7 +205,7 @@ Feature: OpenAI Integration
     Given I go to Marketing/Content Blocks
     And I press "Create Content Block"
     And I click "Add Content"
-    When I click "AI-Powered Content Assistant"
+    When I click on "AI-Powered Content Assistant"
     Then I should see the following options for "Task" select:
       | Generate content with custom provided prompt |
     And I fill "AI-Powered Content Assistant Popup Form" with:
@@ -220,7 +220,7 @@ Feature: OpenAI Integration
       | Alias  | test_alias |
       | Titles | Test Title |
     And I click "OpenBlocksTab"
-    When I click "AI-Powered Content Assistant"
+    When I click on "AI-Powered Content Assistant"
     Then I should see the following options for "Task" select:
       | Correct grammar                              |
       | Expand text                                  |
@@ -283,7 +283,7 @@ Feature: OpenAI Integration
     Then Content preview field should has "Generated content by OpenAI" value
     And I click "Add content"
 
-    When I click "AI-Powered Content Assistant"
+    When I click on "AI-Powered Content Assistant"
     Then Keywords and Features field is empty
     And I should see the following options for "Task" select:
       | Generate content with custom provided prompt     |
@@ -315,7 +315,7 @@ Feature: OpenAI Integration
     And I click "Cancel" in modal window
 
     When I click "OpenBlocksTab"
-    And I click "AI-Powered Content Assistant"
+    And I click on "AI-Powered Content Assistant"
     Then I should see the following options for "Task" select:
       | Correct grammar                                     |
       | Expand text                                         |

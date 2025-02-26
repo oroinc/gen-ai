@@ -25,7 +25,7 @@ oro_behat_extension:
                     Label: 'oro_integration_channel_form[transport][labels][values][default]'
 
         AI-Powered Content Assistant:
-            selector: "div[title='AI-Powered Content Assistant']"
+            selector: 'div[title="AI-Powered Content Assistant"]'
 
         Open AI-Powered Content Assistant:
             selector: '[aria-label="Open AI-Powered Content Assistant"]'
