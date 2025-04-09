@@ -157,7 +157,7 @@ final class ContentGenerationOpenAiClientTest extends TestCase
     public function testSuccessfulCheckConnection(): void
     {
         $this->chatContract
-            ->expects(self::any())
+            ->expects(self::once())
             ->method('create')
             ->willReturn(CreateResponse::fake());
 
@@ -169,7 +169,7 @@ final class ContentGenerationOpenAiClientTest extends TestCase
         $this->chatContract
             ->expects(self::any())
             ->method('create')
-            ->willThrowException(new ErrorException(['message' => 'Message']));
+            ->willThrowException(new ErrorException(['message' => 'Message'], 0));
 
         self::expectException(ContentGenerationClientException::class);
 
