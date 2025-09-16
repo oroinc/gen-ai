@@ -12,8 +12,8 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
 use Oro\Bundle\SecurityBundle\Attribute\CsrfProtection;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,10 +30,12 @@ class AiContentGenerationController extends AbstractController
         name: 'oro_ai_content_generation_validate_connection',
         methods: ['POST']
     )]
-    #[ParamConverter('channel', class: Channel::class, options: ['id' => 'channelId'])]
     #[CsrfProtection()]
-    public function validateConnectionAction(Request $request, ?Channel $channel = null): JsonResponse
-    {
+    public function validateConnectionAction(
+        Request $request,
+        #[MapEntity(id: 'channelId')]
+        ?Channel $channel = null
+    ): JsonResponse {
         try {
             $channel = $channel ?? new Channel();
             $form = $this->createForm(ChannelType::class, $channel);
