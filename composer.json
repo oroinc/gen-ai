@@ -15,7 +15,7 @@
     },
     "require": {
         "oro/commerce": "6.0.*",
-        "openai-php/client": "^0.4.1",
+        "openai-php/client": "^0.4.1 || ^0.5.2",
         "google/apiclient": "^2.12.1"
     },
     "repositories": {

@@ -90,18 +90,22 @@ final class ContentGenerationVertexAiClientTest extends TestCase
             )
             ->willReturn($this->httpResponse);
 
+        $stream = $this->createMock(StreamInterface::class);
+        $stream
+            ->expects(self::once())
+            ->method('__toString')
+            ->willReturn(json_encode(['predictions' => [['content' => 'generated response']]], JSON_THROW_ON_ERROR));
+
         $this->httpResponse
             ->expects(self::once())
             ->method('getBody')
-            ->willReturn(json_encode(['predictions' => [['content' => 'generated response']]]));
+            ->willReturn($stream);
 
         self::assertEquals('generated response', $this->client->generateTextContent($this->request));
     }
 
     public function testClientException(): void
     {
-        $stream = $this->createMock(StreamInterface::class);
-
         $this->httpClient
             ->expects(self::once())
             ->method('request')
@@ -111,17 +115,18 @@ final class ContentGenerationVertexAiClientTest extends TestCase
                 $this->httpResponse
             ));
 
+        $stream = $this->createMock(StreamInterface::class);
+        $stream
+            ->expects(self::once())
+            ->method('getContents')
+            ->willReturn(json_encode(['error' => ['message' => 'Full error message']], JSON_THROW_ON_ERROR));
+
         $this->httpResponse
             ->expects(self::once())
             ->method('getBody')
             ->willReturn($stream);
 
-        $stream
-            ->expects(self::once())
-            ->method('getContents')
-            ->willReturn(json_encode(['error' => ['message' => 'Full error message']]));
-
-        self::expectExceptionObject(new ContentGenerationClientException('Full error message'));
+        $this->expectExceptionObject(new ContentGenerationClientException('Full error message'));
 
         $this->client->generateTextContent($this->request);
     }
@@ -165,7 +170,7 @@ final class ContentGenerationVertexAiClientTest extends TestCase
             )
             ->willThrowException($connectException);
 
-        self::expectExceptionObject(new ContentGenerationClientException(
+        $this->expectExceptionObject(new ContentGenerationClientException(
             'Connection with vertex_ai cannot be established',
             previous: $connectException
         ));
@@ -180,7 +185,7 @@ final class ContentGenerationVertexAiClientTest extends TestCase
             ->method('request')
             ->willThrowException(new \Exception('some message'));
 
-        self::expectExceptionObject(new ContentGenerationClientException('some message'));
+        $this->expectExceptionObject(new ContentGenerationClientException('some message'));
 
         $this->client->generateTextContent($this->request);
     }
