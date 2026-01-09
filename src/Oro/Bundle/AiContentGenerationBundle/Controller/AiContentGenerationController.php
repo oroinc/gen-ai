@@ -129,9 +129,9 @@ class AiContentGenerationController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
-            'oro_ai_content_generation.provider.tasks_provider' => '?'.TasksProvider::class,
-            'oro_ai_content_generation.factory.ai_client_factory' => '?'.ContentGenerationClientFactory::class,
-            'oro_ai_content_generation.form.handler' => '?'.AiContentGenerationFormHandler::class,
+            'oro_ai_content_generation.provider.tasks_provider' => '?' . TasksProvider::class,
+            'oro_ai_content_generation.factory.ai_client_factory' => '?' . ContentGenerationClientFactory::class,
+            'oro_ai_content_generation.form.handler' => '?' . AiContentGenerationFormHandler::class,
             TranslatorInterface::class,
             LoggerInterface::class,
         ]);

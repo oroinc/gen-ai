@@ -51,9 +51,11 @@ class ExtendConfigsProvider
 
         $targetEntity = $extendConfig->get('target_entity');
 
-        if ($this->isEntityDisabledByFeature($targetEntity) ||
+        if (
+            $this->isEntityDisabledByFeature($targetEntity) ||
             $this->hasRelationsReferencedToNotAccessibleEntity($fieldConfigId) ||
-            !$this->isEntityAccessible($targetEntity)) {
+            !$this->isEntityAccessible($targetEntity)
+        ) {
             return false;
         }
 

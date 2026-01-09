@@ -35,10 +35,10 @@ class AiContentGenerationFormType extends AbstractType implements LoggerAwareInt
 
     public function __construct(
         private readonly ContentGenerationClientInterface $contentGenerationClient,
-        private readonly TasksProvider                    $tasksProvider,
-        private readonly ContentGenerationRequestFactory  $contentGenerationRequestFactory,
-        private readonly TranslatorInterface              $translator,
-        private iterable                                  $tones,
+        private readonly TasksProvider $tasksProvider,
+        private readonly ContentGenerationRequestFactory $contentGenerationRequestFactory,
+        private readonly TranslatorInterface $translator,
+        private iterable $tones,
     ) {
         $this->logger = new NullLogger();
     }
