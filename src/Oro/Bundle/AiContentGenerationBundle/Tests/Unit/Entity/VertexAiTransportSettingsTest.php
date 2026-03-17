@@ -43,7 +43,7 @@ final class VertexAiTransportSettingsTest extends TestCase
         $vertexAiTransportSettings = new VertexAiTransportSettings();
 
         self::assertEquals(VertexAiTransportSettings::DEFAULT_LOCATION, $vertexAiTransportSettings->getLocation());
-        self::assertEquals(VertexAiTransportSettings::DEFAULT_MODEL, $vertexAiTransportSettings->getModel());
+        self::assertNull($vertexAiTransportSettings->getModel());
     }
 
     public function testGetSettingsBag(): void

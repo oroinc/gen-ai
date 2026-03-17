@@ -39,7 +39,7 @@ final class OpenAiTransportSettingsTest extends TestCase
     {
         $openAiTransportSettings = new OpenAiTransportSettings();
 
-        self::assertEquals(OpenAiTransportSettings::DEFAULT_MODEL, $openAiTransportSettings->getModel());
+        self::assertNull($openAiTransportSettings->getModel());
     }
 
     public function testGetSettingsBag(): void
