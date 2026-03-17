@@ -36,7 +36,7 @@ final class ContentGenerationVertexAiClientTest extends TestCase
             'temperature' => 36.6,
             'topP' => 10,
             'topK' => 2,
-            'baseUri' => 'site.com/',
+            'baseUri' => 'site.com/model',
             'additionalParameters' => [
                 'add_key' => 'add_value'
             ]
@@ -63,20 +63,25 @@ final class ContentGenerationVertexAiClientTest extends TestCase
             ->method('request')
             ->with(
                 'post',
-                'site.com/model:predict',
+                'site.com/model:generateContent',
                 [
                     'json' => [
-                        'instances' => [
+                        'contents' => [
                             [
-                                'content' => implode(
-                                    "\n",
-                                    [$this->request->getClientPrompt(), $this->request->getClientContext()]
-                                )
+                                'role' => 'user',
+                                'parts' => [
+                                    [
+                                        'text' => implode(
+                                            "\n",
+                                            [$this->request->getClientPrompt(), $this->request->getClientContext()]
+                                        )
+                                    ]
+                                ]
                             ]
                         ],
-                        'parameters' => [
-                            'temperature' => 36.6,
+                        'generationConfig' => [
                             'maxOutputTokens' => 320,
+                            'temperature' => 36.6,
                             'topP' => 10,
                             'topK' => 2,
                             'add_key' => 'add_value'
@@ -90,18 +95,32 @@ final class ContentGenerationVertexAiClientTest extends TestCase
             )
             ->willReturn($this->httpResponse);
 
+        $stream = $this->createMock(StreamInterface::class);
+        $stream
+            ->expects(self::once())
+            ->method('__toString')
+            ->willReturn(json_encode([
+                'candidates' => [
+                    [
+                        'content' => [
+                            'parts' => [
+                                ['text' => 'generated response']
+                            ]
+                        ]
+                    ]
+                ]
+            ], JSON_THROW_ON_ERROR));
+
         $this->httpResponse
             ->expects(self::once())
             ->method('getBody')
-            ->willReturn(json_encode(['predictions' => [['content' => 'generated response']]]));
+            ->willReturn($stream);
 
         self::assertEquals('generated response', $this->client->generateTextContent($this->request));
     }
 
     public function testClientException(): void
     {
-        $stream = $this->createMock(StreamInterface::class);
-
         $this->httpClient
             ->expects(self::once())
             ->method('request')
@@ -111,17 +130,18 @@ final class ContentGenerationVertexAiClientTest extends TestCase
                 $this->httpResponse
             ));
 
+        $stream = $this->createMock(StreamInterface::class);
+        $stream
+            ->expects(self::once())
+            ->method('getContents')
+            ->willReturn(json_encode(['error' => ['message' => 'Full error message']], JSON_THROW_ON_ERROR));
+
         $this->httpResponse
             ->expects(self::once())
             ->method('getBody')
             ->willReturn($stream);
 
-        $stream
-            ->expects(self::once())
-            ->method('getContents')
-            ->willReturn(json_encode(['error' => ['message' => 'Full error message']]));
-
-        self::expectExceptionObject(new ContentGenerationClientException('Full error message'));
+        $this->expectExceptionObject(new ContentGenerationClientException('Full error message'));
 
         $this->client->generateTextContent($this->request);
     }
@@ -138,20 +158,25 @@ final class ContentGenerationVertexAiClientTest extends TestCase
             ->method('request')
             ->with(
                 'post',
-                'site.com/model:predict',
+                'site.com/model:generateContent',
                 [
                     'json' => [
-                        'instances' => [
+                        'contents' => [
                             [
-                                'content' => implode(
-                                    "\n",
-                                    [$this->request->getClientPrompt(), $this->request->getClientContext()]
-                                )
+                                'role' => 'user',
+                                'parts' => [
+                                    [
+                                        'text' => implode(
+                                            "\n",
+                                            [$this->request->getClientPrompt(), $this->request->getClientContext()]
+                                        )
+                                    ]
+                                ]
                             ]
                         ],
-                        'parameters' => [
-                            'temperature' => 36.6,
+                        'generationConfig' => [
                             'maxOutputTokens' => 320,
+                            'temperature' => 36.6,
                             'topP' => 10,
                             'topK' => 2,
                             'add_key' => 'add_value'
@@ -165,7 +190,7 @@ final class ContentGenerationVertexAiClientTest extends TestCase
             )
             ->willThrowException($connectException);
 
-        self::expectExceptionObject(new ContentGenerationClientException(
+        $this->expectExceptionObject(new ContentGenerationClientException(
             'Connection with vertex_ai cannot be established',
             previous: $connectException
         ));
@@ -180,7 +205,22 @@ final class ContentGenerationVertexAiClientTest extends TestCase
             ->method('request')
             ->willThrowException(new \Exception('some message'));
 
-        self::expectExceptionObject(new ContentGenerationClientException('some message'));
+        $this->expectExceptionObject(new ContentGenerationClientException('some message'));
+
+        $this->client->generateTextContent($this->request);
+    }
+
+    public function testUnexpectedResponseStructureThrowsWithResponseBody(): void
+    {
+        $responseBody = json_encode(['candidates' => []], JSON_THROW_ON_ERROR);
+        $stream = $this->createMock(StreamInterface::class);
+        $stream->expects(self::once())->method('__toString')->willReturn($responseBody);
+        $this->httpClient->expects(self::once())->method('request')->willReturn($this->httpResponse);
+        $this->httpResponse->expects(self::once())->method('getBody')->willReturn($stream);
+
+        $this->expectException(ContentGenerationClientException::class);
+        $this->expectExceptionMessage('Unexpected Vertex AI response structure');
+        $this->expectExceptionMessage($responseBody);
 
         $this->client->generateTextContent($this->request);
     }
@@ -192,12 +232,15 @@ final class ContentGenerationVertexAiClientTest extends TestCase
             ->method('request')
             ->with(
                 'post',
-                'site.com/model:predict',
+                'site.com/model:generateContent',
                 [
                     'json' => [
-                        'instances' => [
+                        'contents' => [
                             [
-                                'content' => 'Check connection'
+                                'role' => 'user',
+                                'parts' => [
+                                    ['text' => 'Check connection']
+                                ]
                             ]
                         ]
                     ],

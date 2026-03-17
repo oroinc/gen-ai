@@ -98,6 +98,7 @@ final class OpenAiTransportSettingsTypeTest extends FormIntegrationTestCase
         $openAiSettings = new OpenAiTransportSettings();
         $openAiSettings
             ->setToken('some token')
+            ->setModel('gpt-4o-mini')
             ->addLabel($this->createLocalizedValue(
                 'Label 1',
                 null,
@@ -107,7 +108,7 @@ final class OpenAiTransportSettingsTypeTest extends FormIntegrationTestCase
 
         $submitData = [
             'token' => 'some token',
-            'model' => OpenAiTransportSettings::DEFAULT_MODEL,
+            'model' => 'gpt-4o-mini',
             'labels' => [
                 'values' => [
                     'default' => 'Label 1',

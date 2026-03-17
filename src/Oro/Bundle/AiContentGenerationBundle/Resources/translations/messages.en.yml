@@ -130,7 +130,7 @@ oro_ai_content_generation:
                     tooltip: 'Generate this value on the page <a href="https://platform.openai.com/account/api-keys" target="_blank">OpenAI API keys</a>.'
                 model:
                     label: 'Model'
-                    tooltip: 'The model which will generate the result.'
+                    tooltip: 'The model which will generate the result. The list of available LLM models is available at <a href="https://developers.openai.com/api/docs/models" target="_blank">OpenAI API models</a>.'
         vertex_ai:
             channel_type:
                 label: 'Vertex AI'
@@ -153,4 +153,4 @@ oro_ai_content_generation:
                     tooltip: 'Use the Location value from the Vertex AI text playground.'
                 model:
                     label: 'Model'
-                    tooltip: 'The model which will generate the result.'
+                    tooltip: 'The model which will generate the result. The list of available LLM models is available at <a href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models" target="_blank">Vertex AI models</a>.'

@@ -20,26 +20,24 @@ class OpenAiTransportSettings extends Transport
     public const TOKEN = 'token';
     public const MODEL = 'model';
 
-    public const DEFAULT_MODEL = 'gpt-4o-mini';
-
     /**
-      * @var Collection<int, LocalizedFallbackValue>
-      *
-      * @ORM\ManyToMany(
-      *      targetEntity="Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue",
-      *      cascade={"ALL"},
-      *      orphanRemoval=true
-      * )
-      * @ORM\JoinTable(
-      *      name="oro_open_ai_transp_label",
-      *      joinColumns={
-      *          @ORM\JoinColumn(name="transport_id", referencedColumnName="id", onDelete="CASCADE")
-      *      },
-      *      inverseJoinColumns={
-      *          @ORM\JoinColumn(name="localized_value_id", referencedColumnName="id", onDelete="CASCADE", unique=true)
-      *      }
-      * )
-      */
+     * @var Collection<int, LocalizedFallbackValue>
+     *
+     * @ORM\ManyToMany(
+     *      targetEntity="Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue",
+     *      cascade={"ALL"},
+     *      orphanRemoval=true
+     * )
+     * @ORM\JoinTable(
+     *      name="oro_open_ai_transp_label",
+     *      joinColumns={
+     *          @ORM\JoinColumn(name="transport_id", referencedColumnName="id", onDelete="CASCADE")
+     *      },
+     *      inverseJoinColumns={
+     *          @ORM\JoinColumn(name="localized_value_id", referencedColumnName="id", onDelete="CASCADE", unique=true)
+     *      }
+     * )
+     */
     protected ?Collection $labels = null;
 
     /**
@@ -50,7 +48,7 @@ class OpenAiTransportSettings extends Transport
     /**
      * @ORM\Column(name="open_ai_model", type="string", length=255, nullable=true)
      */
-    protected string $model = self::DEFAULT_MODEL;
+    protected string $model = '';
 
     private ?ParameterBag $settings = null;
 

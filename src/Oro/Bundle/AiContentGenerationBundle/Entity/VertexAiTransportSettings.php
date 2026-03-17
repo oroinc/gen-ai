@@ -23,7 +23,6 @@ class VertexAiTransportSettings extends Transport
     public const LOCATION = 'location';
     public const MODEL = 'model';
 
-    public const DEFAULT_MODEL = 'text-bison@001';
     public const DEFAULT_LOCATION = 'us-central1';
 
     /**
@@ -69,7 +68,7 @@ class VertexAiTransportSettings extends Transport
     /**
      * @ORM\Column(name="vertex_ai_model", type="string", length=255, nullable=true)
      */
-    protected string $model = self::DEFAULT_MODEL;
+    protected string $model = '';
 
     private ?ParameterBag $settings = null;
 

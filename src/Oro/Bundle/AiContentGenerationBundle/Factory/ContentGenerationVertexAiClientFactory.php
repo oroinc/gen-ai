@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class ContentGenerationVertexAiClientFactory implements ContentGenerationClientFactoryInterface
 {
-    private const BASE_URI_PLACEHOLDER = 'https://%s/v1/projects/%s/locations/%s/publishers/google/models/';
+    private const BASE_URI_PLACEHOLDER = 'https://%s/v1/projects/%s/locations/%s/publishers/google/models/%s';
 
     private array $additionalParameters = [];
 
