@@ -17,11 +17,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 #[ORM\Entity]
 class OpenAiTransportSettings extends Transport
 {
-    public const  LABELS = 'labels';
-    public const  TOKEN = 'token';
-    public const  MODEL = 'model';
-
-    public const  DEFAULT_MODEL = 'gpt-4o-mini';
+    public const LABELS = 'labels';
+    public const TOKEN = 'token';
+    public const MODEL = 'model';
 
     /**
      * @var Collection<int, LocalizedFallbackValue>
@@ -36,7 +34,7 @@ class OpenAiTransportSettings extends Transport
     protected ?string $token = null;
 
     #[ORM\Column(name: 'open_ai_model', type: Types::STRING, length: 255, nullable: true)]
-    protected string $model = self::DEFAULT_MODEL;
+    protected string $model = '';
 
     private ?ParameterBag $settings = null;
 

@@ -10,7 +10,7 @@ Feature: OpenAI Integration
     When I click "Create Integration"
     And I fill "OpenAI Integration Form" with:
       | Type | OpenAI |
-    Then Model field should has "gpt-4o-mini" value
+    Then Model field is empty
     When I click "Check OpenAI connection"
     Then I should see "OpenAI Integration Form" validation errors:
       | Name  | This value should not be blank. |
@@ -24,12 +24,14 @@ Feature: OpenAI Integration
       | Name  | This value should not be blank. |
       | Label | This value should not be blank. |
       | Token | This value should not be blank. |
+      | Model | This value should not be blank. |
 
   Scenario: Check OpenAI Integration connection
     Given I fill "OpenAI Integration Form" with:
-      | Name  | OpenAI     |
-      | Label | OpenAI     |
+      | Name  | OpenAI      |
+      | Label | OpenAI      |
       | Token | Wrong token |
+      | Model | gpt-4o-mini |
     When I save form
     Then I should see "Integration saved" flash message
     When I click "Check OpenAI connection"
@@ -43,7 +45,7 @@ Feature: OpenAI Integration
   Scenario: Check OpenAI Integration on the grid
     Given I click "Cancel"
     Then I should see following grid:
-      | Name    | Type    | Status |
+      | Name   | Type   | Status |
       | OpenAI | OpenAI | Active |
 
   Scenario: Enable WYSIWYG Editor
@@ -275,10 +277,10 @@ Feature: OpenAI Integration
     When I click "Open AI-Powered Content Assistant"
     Then Keywords and Features field is empty
     And I should see the following options for "Task" select:
-      | Generate content with custom provided prompt     |
+      | Generate content with custom provided prompt |
     And I fill "AI-Powered Content Assistant Popup Form" with:
-      | Task                  | Generate content with custom provided prompt     |
-      | Keywords and Features | Test text                                        |
+      | Task                  | Generate content with custom provided prompt |
+      | Keywords and Features | Test text                                    |
     When I click "Generate"
     Then Content preview field should has "Generated content by OpenAI" value
     And I click "Add content"
@@ -286,7 +288,7 @@ Feature: OpenAI Integration
     When I click on "AI-Powered Content Assistant"
     Then Keywords and Features field is empty
     And I should see the following options for "Task" select:
-      | Generate content with custom provided prompt     |
+      | Generate content with custom provided prompt |
     And I fill "AI-Powered Content Assistant Popup Form" with:
       | Keywords and Features | Test text |
     When I click "Generate"
@@ -295,8 +297,8 @@ Feature: OpenAI Integration
 
   Scenario: Check generation content with predefined content for Product
     Given fill "Product Form" with:
-      | Name       | Product Name    |
-      | SKU        | A005            |
+      | Name | Product Name |
+      | SKU  | A005         |
     When I click "Open AI-Powered Content Assistant"
     Then I should see the following options for "Task" select:
       | Correct grammar                                     |
@@ -317,12 +319,12 @@ Feature: OpenAI Integration
     When I click "OpenBlocksTab"
     And I click on "AI-Powered Content Assistant"
     Then I should see the following options for "Task" select:
-      | Correct grammar                                     |
-      | Expand text                                         |
-      | Shorten text                                        |
-      | Generate content with custom provided prompt        |
-      | Extract product features from the description       |
-      | Generate product description with an open prompt    |
+      | Correct grammar                                  |
+      | Expand text                                      |
+      | Shorten text                                     |
+      | Generate content with custom provided prompt     |
+      | Extract product features from the description    |
+      | Generate product description with an open prompt |
     When I click "Generate"
     Then Content preview field should has "Generated content by OpenAI" value
     And I click "Cancel" in modal window
@@ -335,4 +337,4 @@ Feature: OpenAI Integration
       | Keywords and Features | |
     And I click "Generate"
     Then I should see "AI-Powered Content Assistant Popup Form" validation errors:
-      | Keywords and Features  | This value should not be blank. |
+      | Keywords and Features | This value should not be blank. |
