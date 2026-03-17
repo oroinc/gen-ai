@@ -5,7 +5,6 @@ namespace Oro\Bundle\AiContentGenerationBundle\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
-use Oro\Bundle\AiContentGenerationBundle\Entity\VertexAiTransportSettings;
 use Oro\Bundle\AiContentGenerationBundle\Exception\ContentGenerationClientException;
 use Oro\Bundle\AiContentGenerationBundle\Request\ContentGenerationRequest;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -17,7 +16,7 @@ class ContentGenerationVertexAiClient implements ContentGenerationClientInterfac
 {
     public const string VERTEX_AI = 'vertex_ai';
 
-    private const string PREDICT_REQUEST_PLACEHOLDER = '%s:predict';
+    private const string GENERATE_CONTENT_SUFFIX = ':generateContent';
 
     public function __construct(
         private readonly ClientInterface $httpClient,
@@ -31,16 +30,24 @@ class ContentGenerationVertexAiClient implements ContentGenerationClientInterfac
         return $this->processRequest(function () use ($request) {
             $response = $this->httpClient->request(
                 'post',
-                $this->getPredictUri(),
+                $this->getGenerateContentUri(),
                 [
                     'json' => $this->buildPayload($request),
                     'headers' => $this->getHeaders()
                 ]
             );
 
-            $response = json_decode((string)$response->getBody(), true);
+            $body = (string)$response->getBody();
+            $response = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
 
-            return $response['predictions'][0]['content'];
+            $text = $response['candidates'][0]['content']['parts'][0]['text'] ?? null;
+            if ($text === null) {
+                throw new ContentGenerationClientException(
+                    sprintf('Unexpected Vertex AI response structure. Response: %s', $body ?: '(empty)')
+                );
+            }
+
+            return (string)$text;
         });
     }
 
@@ -50,12 +57,15 @@ class ContentGenerationVertexAiClient implements ContentGenerationClientInterfac
         $this->processRequest(function () {
             $this->httpClient->request(
                 'post',
-                $this->getPredictUri(),
+                $this->getGenerateContentUri(),
                 [
                     'json' => [
-                        'instances' => [
+                        'contents' => [
                             [
-                                'content' => 'Check connection'
+                                'role' => 'user',
+                                'parts' => [
+                                    ['text' => 'Check connection']
+                                ]
                             ]
                         ]
                     ],
@@ -99,14 +109,9 @@ class ContentGenerationVertexAiClient implements ContentGenerationClientInterfac
         ];
     }
 
-    private function getPredictUri(): string
+    private function getGenerateContentUri(): string
     {
-        $endpoint = sprintf(
-            self::PREDICT_REQUEST_PLACEHOLDER,
-            $this->parameterBag->get(VertexAiTransportSettings::MODEL)
-        );
-
-        return $this->parameterBag->get('baseUri') . $endpoint;
+        return $this->parameterBag->get('baseUri') . self::GENERATE_CONTENT_SUFFIX;
     }
 
     private function buildPayload(ContentGenerationRequest $request): array
@@ -116,19 +121,24 @@ class ContentGenerationVertexAiClient implements ContentGenerationClientInterfac
             $request->getClientContext()
         ];
 
+        $generationConfig = [
+            'maxOutputTokens' => $request->getMaxTokens(),
+            'temperature' => $this->parameterBag->get('temperature'),
+            'topP' => $this->parameterBag->get('topP'),
+            'topK' => $this->parameterBag->get('topK'),
+            ...$this->parameterBag->get('additionalParameters', [])
+        ];
+
         return [
-            'instances' => [
+            'contents' => [
                 [
-                    'content' => implode("\n", $messages)
+                    'role' => 'user',
+                    'parts' => [
+                        ['text' => implode("\n", $messages)]
+                    ]
                 ]
             ],
-            'parameters' => [
-                'maxOutputTokens' => $request->getMaxTokens(),
-                'temperature' => $this->parameterBag->get('temperature'),
-                'topP' => $this->parameterBag->get('topP'),
-                'topK' => $this->parameterBag->get('topK'),
-                ...$this->parameterBag->get('additionalParameters', [])
-            ]
+            'generationConfig' => $generationConfig
         ];
     }
 }

@@ -10,7 +10,7 @@ Feature: Vertex AI Integration
     When I click "Create Integration"
     And I fill "Vertex AI Integration Form" with:
       | Type | Vertex AI |
-    Then Model field should has "text-bison@001" value
+    Then Model field is empty
     Then Location field should has "us-central1" value
     When I click "Check Vertex AI connection"
     Then I should see "Vertex AI Integration Form" validation errors:
@@ -18,6 +18,7 @@ Feature: Vertex AI Integration
       | Label        | This value should not be blank. |
       | API Endpoint | This value should not be blank. |
       | Project ID   | This value should not be blank. |
+      | Model        | This value should not be blank. |
     And I click "Cancel"
     And I click "Create Integration"
     When I fill "Vertex AI Integration Form" with:
@@ -29,10 +30,11 @@ Feature: Vertex AI Integration
       | API Endpoint | This value should not be blank. |
       | Project ID   | This value should not be blank. |
     When I fill "Vertex AI Integration Form" with:
-      | Name         | Vertex AI |
-      | Label        | Vertex AI |
-      | API Endpoint | Endpoint  |
-      | Project ID   | vertex_id |
+      | Name         | Vertex AI      |
+      | Label        | Vertex AI      |
+      | API Endpoint | Endpoint       |
+      | Project ID   | vertex_id      |
+      | Model        | text-bison@001 |
     And I save form
     Then I should see "Vertex AI config file should not be blank."
     When I fill "Vertex AI Integration Form" with:

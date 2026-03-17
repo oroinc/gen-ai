@@ -122,6 +122,7 @@ final class VertexAiTransportSettingsTypeTest extends FormIntegrationTestCase
             ->setConfigFile('content')
             ->setApiEndpoint('/endpoint')
             ->setProjectId('12345')
+            ->setModel('gemini-2.0-flash')
             ->addLabel($this->createLocalizedValue(
                 'Label 1',
                 null,
@@ -134,7 +135,7 @@ final class VertexAiTransportSettingsTypeTest extends FormIntegrationTestCase
             'apiEndpoint' => '/endpoint',
             'projectId' => '12345',
             'location' => VertexAiTransportSettings::DEFAULT_LOCATION,
-            'model' => VertexAiTransportSettings::DEFAULT_MODEL,
+            'model' => 'gemini-2.0-flash',
             'labels' => [
                 'values' => [
                     'default' => 'Label 1',

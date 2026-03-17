@@ -21,8 +21,6 @@ class OpenAiTransportSettings extends Transport
     public const string TOKEN = 'token';
     public const string MODEL = 'model';
 
-    public const string DEFAULT_MODEL = 'gpt-4o-mini';
-
     /**
      * @var Collection<int, LocalizedFallbackValue>
      */
@@ -36,7 +34,7 @@ class OpenAiTransportSettings extends Transport
     protected ?string $token = null;
 
     #[ORM\Column(name: 'open_ai_model', type: Types::STRING, length: 255, nullable: true)]
-    protected string $model = self::DEFAULT_MODEL;
+    protected string $model = '';
 
     private ?ParameterBag $settings = null;
 
