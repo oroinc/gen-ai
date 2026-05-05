@@ -11,7 +11,7 @@ class OroAiContentGenerationBundleInstaller implements Installation
     #[\Override]
     public function getMigrationVersion(): string
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     #[\Override]
@@ -30,10 +30,9 @@ class OroAiContentGenerationBundleInstaller implements Installation
     {
         $table = $schema->getTable('oro_integration_transport');
         $table->addColumn('open_ai_model', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('open_ai_token', 'crypted_string', [
+        $table->addColumn('open_ai_token', 'crypted_text', [
             'notnull' => false,
-            'length' => 255,
-            'comment' => '(DC2Type:crypted_string)'
+            'comment' => '(DC2Type:crypted_text)'
         ]);
     }
 

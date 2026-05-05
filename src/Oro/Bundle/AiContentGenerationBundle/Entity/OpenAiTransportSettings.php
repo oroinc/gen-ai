@@ -8,7 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
-use Oro\Bundle\SecurityBundle\DoctrineExtension\Dbal\Types\CryptedStringType;
+use Oro\Bundle\SecurityBundle\DoctrineExtension\Dbal\Types\CryptedTextType;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -30,7 +30,7 @@ class OpenAiTransportSettings extends Transport
     #[ORM\InverseJoinColumn(name: 'localized_value_id', referencedColumnName: 'id', unique: true, onDelete: 'CASCADE')]
     protected ?Collection $labels = null;
 
-    #[ORM\Column(name: 'open_ai_token', type: CryptedStringType::TYPE, length: 255, nullable: true)]
+    #[ORM\Column(name: 'open_ai_token', type: CryptedTextType::TYPE, nullable: true)]
     protected ?string $token = null;
 
     #[ORM\Column(name: 'open_ai_model', type: Types::STRING, length: 255, nullable: true)]
