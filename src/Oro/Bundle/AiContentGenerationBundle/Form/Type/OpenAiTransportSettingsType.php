@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -25,7 +26,7 @@ class OpenAiTransportSettingsType extends AbstractType
                 'tooltip'  => 'oro_ai_content_generation.integration.open_ai.settings.labels.tooltip',
                 'required' => true,
                 'entry_options'  => [
-                    'constraints' => [new NotBlank()],
+                    'constraints' => [new NotBlank(), new Length(max: 255)],
                 ]
             ])
             ->add('token', OroPlaceholderPasswordType::class, [

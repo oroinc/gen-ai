@@ -1,0 +1,29 @@
+Oro\Bundle\AiContentGenerationBundle\Entity\OpenAiTransportSettings:
+    properties:
+        token:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        model:
+            - NotBlank: ~
+            - Length:
+                max: 255
+
+Oro\Bundle\AiContentGenerationBundle\Entity\VertexAiTransportSettings:
+    properties:
+        apiEndpoint:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        projectId:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        location:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        model:
+            - NotBlank: ~
+            - Length:
+                max: 255

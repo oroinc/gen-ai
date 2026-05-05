@@ -21,8 +21,6 @@ use Oro\Component\Testing\Unit\EntityTrait;
 use Oro\Component\Testing\Unit\FormIntegrationTestCase;
 use Oro\Component\Testing\Unit\PreloadedExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
-use Symfony\Component\Validator\Validation;
 
 final class OpenAiTransportSettingsTypeTest extends FormIntegrationTestCase
 {
@@ -74,7 +72,34 @@ final class OpenAiTransportSettingsTypeTest extends FormIntegrationTestCase
                     ],
                 ]
             ),
-            new ValidatorExtension(Validation::createValidator()),
+            $this->getValidatorExtension(true),
+        ];
+    }
+
+    /**
+     * @dataProvider submitWithLongValuesProvider
+     */
+    public function testSubmitWithTooLongValues(array $override): void
+    {
+        $submitData = array_replace_recursive([
+            'labels' => ['values' => ['default' => 'Label']],
+            'token' => 'token',
+            'model' => 'gpt-4o-mini',
+        ], $override);
+
+        $form = $this->factory->create(OpenAiTransportSettingsType::class);
+        $form->submit($submitData);
+
+        self::assertTrue($form->isSynchronized());
+        self::assertFalse($form->isValid());
+    }
+
+    public function submitWithLongValuesProvider(): array
+    {
+        return [
+            'label too long' => [['labels' => ['values' => ['default' => str_repeat('a', 256)]]]],
+            'token too long' => [['token' => str_repeat('a', 256)]],
+            'model too long' => [['model' => str_repeat('a', 256)]],
         ];
     }
 
