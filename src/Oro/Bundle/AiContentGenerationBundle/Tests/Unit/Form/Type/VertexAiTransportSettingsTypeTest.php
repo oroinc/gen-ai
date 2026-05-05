@@ -27,9 +27,7 @@ use Oro\Component\Testing\Unit\FormIntegrationTestCase;
 use Oro\Component\Testing\Unit\PreloadedExtension;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\HttpFoundation\File\File as HttpFile;
-use Symfony\Component\Validator\Validation;
 
 final class VertexAiTransportSettingsTypeTest extends FormIntegrationTestCase
 {
@@ -87,7 +85,47 @@ final class VertexAiTransportSettingsTypeTest extends FormIntegrationTestCase
                     ],
                 ]
             ),
-            new ValidatorExtension(Validation::createValidator()),
+            $this->getValidatorExtension(true),
+        ];
+    }
+
+    /**
+     * @dataProvider submitWithLongValuesProvider
+     */
+    public function testSubmitWithTooLongValues(array $override): void
+    {
+        $this->modelDataTransformer->expects(self::any())
+            ->method('reverseTransform')
+            ->willReturn('content');
+
+        $file = new File();
+        $file->setEmptyFile(false);
+        $file->setFile(new HttpFile('config.json', false));
+
+        $submitData = array_replace_recursive([
+            'labels' => ['values' => ['default' => 'Label']],
+            'configFile' => ['file' => $file, 'emptyFile' => ''],
+            'apiEndpoint' => '/endpoint',
+            'projectId' => '12345',
+            'location' => VertexAiTransportSettings::DEFAULT_LOCATION,
+            'model' => 'gemini-2.0-flash',
+        ], $override);
+
+        $form = $this->factory->create(VertexAiTransportSettingsType::class);
+        $form->submit($submitData);
+
+        self::assertTrue($form->isSynchronized());
+        self::assertFalse($form->isValid());
+    }
+
+    public function submitWithLongValuesProvider(): array
+    {
+        return [
+            'label too long' => [['labels' => ['values' => ['default' => str_repeat('a', 256)]]]],
+            'apiEndpoint too long' => [['apiEndpoint' => str_repeat('a', 256)]],
+            'projectId too long' => [['projectId' => str_repeat('a', 256)]],
+            'location too long' => [['location' => str_repeat('a', 256)]],
+            'model too long' => [['model' => str_repeat('a', 256)]],
         ];
     }
 
