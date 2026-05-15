@@ -44,7 +44,7 @@ final class ContentGenerationOpenAiClientTest extends TestCase
         );
 
         $this->parameters = new ParameterBag([
-            'model' => 'modelName',
+            'model' => 'gpt-4o',
             'maxTokens' => 1000,
             'maxIterations' => 2,
             'additionalParameters' => [
@@ -60,8 +60,13 @@ final class ContentGenerationOpenAiClientTest extends TestCase
         self::assertFalse($this->oroClient->supportsUserContentSize());
     }
 
-    public function testThatFullResultReturnedFromFirstTry(): void
+    /**
+     * @dataProvider maxTokensFieldProvider
+     */
+    public function testThatFullResultReturnedFromFirstTry(string $model, string $expectedField): void
     {
+        $this->parameters->set('model', $model);
+
         $fakeResponse = CreateResponse::fake([
             'choices' => [
                 ['message' => ['content' => 'simplified generated text']]
@@ -72,12 +77,12 @@ final class ContentGenerationOpenAiClientTest extends TestCase
             ->expects(self::once())
             ->method('create')
             ->with([
-                'model' => 'modelName',
+                'model' => $model,
                 'messages' => [
                     ['role' => 'system', 'content' => $this->request->getClientPrompt()],
                     ['role' => 'user', 'content' => $this->request->getClientContext()]
                 ],
-                'max_tokens' => 1000,
+                $expectedField => 1000,
                 'temperature' => 2,
                 'top_p' => 1,
                 'frequency_penalty' => 0,
@@ -89,6 +94,28 @@ final class ContentGenerationOpenAiClientTest extends TestCase
             'simplified generated text',
             $this->oroClient->generateTextContent($this->request)
         );
+    }
+
+    public function maxTokensFieldProvider(): array
+    {
+        return [
+            // Closed legacy families that keep using max_tokens.
+            'gpt-3.5-turbo' => ['gpt-3.5-turbo', 'max_tokens'],
+            'gpt-3.5-turbo dated' => ['gpt-3.5-turbo-0125', 'max_tokens'],
+            'gpt-4' => ['gpt-4', 'max_tokens'],
+            'gpt-4-turbo' => ['gpt-4-turbo', 'max_tokens'],
+            'gpt-4-turbo dated' => ['gpt-4-turbo-2024-04-09', 'max_tokens'],
+            'gpt-4.1' => ['gpt-4.1', 'max_tokens'],
+            'gpt-4o' => ['gpt-4o', 'max_tokens'],
+            'gpt-4o-mini dated' => ['gpt-4o-mini-2024-07-18', 'max_tokens'],
+            // Modern reasoning and gpt-5+ families plus any future generation.
+            'o1-preview' => ['o1-preview', 'max_completion_tokens'],
+            'o3-mini' => ['o3-mini', 'max_completion_tokens'],
+            'o4-mini dated' => ['o4-mini-2025-04-16', 'max_completion_tokens'],
+            'gpt-5' => ['gpt-5', 'max_completion_tokens'],
+            'gpt-5.4-mini dated' => ['gpt-5.4-mini-2026-03-17', 'max_completion_tokens'],
+            'hypothetical gpt-6' => ['gpt-6', 'max_completion_tokens'],
+        ];
     }
 
     public function testThatFullResultReturnedAfterAllTries(): void

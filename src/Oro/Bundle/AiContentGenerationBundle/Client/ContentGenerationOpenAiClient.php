@@ -80,19 +80,35 @@ class ContentGenerationOpenAiClient implements ContentGenerationClientInterface
         $this->executedRequests++;
 
         try {
-            return $this->openAiSdkClient->chat()->create([
-                'model' => $this->parameterBag->get(OpenAiTransportSettings::MODEL),
-                'messages' => array_map(fn (OpenAiMessage $message) => $message->toArray(), $messages),
-                'max_tokens' => $this->parameterBag->get('maxTokens') * $this->executedRequests,
-                'temperature' => 1,
-                'top_p' => 1,
-                'frequency_penalty' => 0,
-                'presence_penalty' => 0,
-                ...$this->parameterBag->get('additionalParameters', [])
-            ]);
+            return $this->openAiSdkClient->chat()->create($this->buildPayload($messages));
         } catch (ErrorException $exception) {
             throw new ContentGenerationClientException($exception->getMessage());
         }
+    }
+
+    /**
+     * @param array<int, OpenAiMessage> $messages
+     * @return array<string, mixed>
+     */
+    private function buildPayload(array $messages): array
+    {
+        $model = $this->parameterBag->get(OpenAiTransportSettings::MODEL);
+        // gpt-3 and gpt-4 are closed families (OpenAI no longer ships new models there) and use max_tokens;
+        // every later family (o-series, gpt-5+, and anything future) uses max_completion_tokens.
+        $maxTokensField = str_starts_with($model, 'gpt-3.') || str_starts_with($model, 'gpt-4')
+            ? 'max_tokens'
+            : 'max_completion_tokens';
+
+        return [
+            'model' => $model,
+            'messages' => array_map(fn (OpenAiMessage $message) => $message->toArray(), $messages),
+            $maxTokensField => $this->parameterBag->get('maxTokens') * $this->executedRequests,
+            'temperature' => 1,
+            'top_p' => 1,
+            'frequency_penalty' => 0,
+            'presence_penalty' => 0,
+            ...$this->parameterBag->get('additionalParameters', [])
+        ];
     }
 
     /**
