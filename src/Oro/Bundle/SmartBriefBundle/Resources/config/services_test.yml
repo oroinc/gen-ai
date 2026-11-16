@@ -1,0 +1,87 @@
+services:
+    # Public aliases so functional tests can reach otherwise private services through the container.
+    oro_smart_brief.tests.cache:
+        alias: oro_smart_brief.cache
+        public: true
+
+    oro_smart_brief.tests.cache.summary:
+        alias: oro_smart_brief.cache.summary
+        public: true
+
+    # The AI provider stand-in: both provider factories are replaced, so no functional test
+    # ever reaches OpenAI or Vertex AI.
+    oro_smart_brief.tests.factory.open_ai_client_factory:
+        class: Oro\Bundle\SmartBriefBundle\Tests\Functional\Stub\OpenAiSummaryClientFactoryStub
+        decorates: oro_smart_brief.factory.open_ai_client_factory
+
+    oro_smart_brief.tests.factory.vertex_ai_client_factory:
+        class: Oro\Bundle\SmartBriefBundle\Tests\Functional\Stub\OpenAiSummaryClientFactoryStub
+        decorates: oro_smart_brief.factory.vertex_ai_client_factory
+
+    oro_smart_brief.tests.client.factory:
+        alias: oro_smart_brief.client.factory
+        public: true
+
+    oro_smart_brief.tests.generator:
+        alias: oro_smart_brief.generator
+        public: true
+
+    # Page and widget tests need informative Customer facts of fixed display shapes: the stub
+    # decorates the real provider and returns fixed facts only while a test switches it on.
+    oro_smart_brief.tests.fact_provider.customer:
+        class: Oro\Bundle\SmartBriefBundle\Tests\Functional\Stub\CustomerFactProviderStub
+        decorates: oro_smart_brief.fact_provider.customer
+        decoration_inner_name: oro_smart_brief.tests.fact_provider.customer.inner
+        public: true
+        arguments:
+            - '@.inner'
+            - '@oro_smart_brief.provider.calendar_date'
+
+    oro_smart_brief.tests.fact_provider.customer.real:
+        alias: oro_smart_brief.tests.fact_provider.customer.inner
+        public: true
+
+    oro_smart_brief.tests.fact_provider.registry:
+        alias: oro_smart_brief.fact_provider.registry
+        public: true
+
+    oro_smart_brief.tests.provider.summary_access:
+        alias: oro_smart_brief.provider.summary_access
+        public: true
+
+    oro_smart_brief.tests.provider.calendar_date:
+        alias: oro_smart_brief.provider.calendar_date
+        public: true
+
+    oro_smart_brief.tests.fact_provider.customer.last_order_source:
+        alias: oro_smart_brief.fact_provider.customer.last_order_source
+        public: true
+
+    oro_smart_brief.tests.fact_provider.customer.open_rfq_source:
+        alias: oro_smart_brief.fact_provider.customer.open_rfq_source
+        public: true
+
+    oro_smart_brief.tests.fact_provider.customer.awaiting_quote_source:
+        alias: oro_smart_brief.fact_provider.customer.awaiting_quote_source
+        public: true
+
+    oro_smart_brief.tests.fact_provider.customer.last_contact_source:
+        alias: oro_smart_brief.fact_provider.customer.last_contact_source
+        public: true
+
+    oro_smart_brief.tests.fact_provider.rfq:
+        alias: oro_smart_brief.fact_provider.rfq
+        public: true
+
+    oro_smart_brief.tests.fact_provider.rfq.quote_source:
+        alias: oro_smart_brief.fact_provider.rfq.quote_source
+        public: true
+
+    oro_smart_brief.tests.fact_provider.rfq.purchase_history_source:
+        alias: oro_smart_brief.fact_provider.rfq.purchase_history_source
+        public: true
+
+    oro_smart_brief.tests.fact_provider.rfq.last_paid_price_source:
+        alias: oro_smart_brief.fact_provider.rfq.last_paid_price_source
+        public: true
+

@@ -1,0 +1,92 @@
+{# SmartBrief content, a collapsible section under the page title: collapsed it is one line (the title,
+   the first line of the content and the controls). Expanded, it shows the AI paragraph with the "Key facts" column
+   next to it. The RFQ price ranges go to the AI only and are not shown. When the AI fails, the paragraph is a short
+   notice and the key facts are the content. A record without informative facts shows only a "no recent activity"
+   note, without key facts or the Regenerate button. The record facts are the rows of `oro_smart_brief_facts`
+   (KeyFactsProvider: which facts, lines, icons and links), with an icon per line; everything is auto-escaped. A line
+   can end with a link to the records behind it (`oro_smart_brief_link`): the widget filters a grid of this page in
+   place, and any other link opens through the app navigation.
+   The block starts expanded or collapsed as set in `oro_smart_brief.expanded`; the user's choice is kept in the
+   browser for the record until its facts change (the fingerprint). The Regenerate button is shown when enabled
+   (`oro_smart_brief.regenerate_enabled`); there are no feedback or copy controls. #}
+{% set noActivity = not view.facts.hasInformativeFacts() %}
+{% set keyFacts = noActivity ? [] : oro_smart_brief_facts(view) %}
+{% set regenerate = not noActivity and oro_config_value('oro_smart_brief.regenerate_enabled') %}
+{% set bodyId = 'smart-brief-body-' ~ random() %}
+{% set expandedDefault = oro_config_value('oro_smart_brief.expanded') %}
+{% set text = view.text ?? (noActivity ? 'oro_smart_brief.block.no_activity_text' : 'oro_smart_brief.block.fallback_text')|trans %}
+{% set toggleLabel = (expandedDefault ? 'oro_smart_brief.block.collapse' : 'oro_smart_brief.block.expand')|trans %}
+
+<div class="widget-content smart-brief-panel{{ view.fallback ? ' smart-brief-panel--fallback' }}{{ keyFacts|length ? ' smart-brief-panel--with-facts' }}{{ not expandedDefault ? ' smart-brief-panel--collapsed' }}"
+     data-smart-brief-collapsible="1"
+     data-smart-brief-expanded-default="{{ expandedDefault ? 1 : 0 }}"
+     data-smart-brief-fingerprint="{{ oro_smart_brief_fingerprint(view) }}"
+     {% if noActivity %}data-smart-brief-no-activity="1"{% elseif view.fallback %}data-smart-brief-fallback="1"{% endif %}>
+    <div class="smart-brief-panel__header">
+        <span class="smart-brief-panel__icon fa-magic" aria-hidden="true"></span>
+        <h4 class="smart-brief-panel__title">{{ 'oro_smart_brief.block.title'|trans }}</h4>
+        <p class="smart-brief-panel__teaser" aria-hidden="true">{{ text|oro_smart_brief_text }}</p>
+        <span class="smart-brief-panel__meta">
+            {% if view.text is not null %}
+                <span class="smart-brief-panel__age" title="{{ view.generatedAt|oro_format_datetime }}">
+                    {{- oro_smart_brief_age(view.generatedAt) -}}
+                </span>
+            {% endif %}
+            {% if regenerate %}
+                <button type="button" class="smart-brief-panel__action smart-brief-panel__regenerate"
+                        data-role="smart-brief-regenerate"
+                        title="{{ 'oro_smart_brief.block.regenerate'|trans }}"
+                        aria-label="{{ 'oro_smart_brief.block.regenerate'|trans }}">
+                    <span class="fa-refresh" aria-hidden="true"></span>
+                </button>
+            {% endif %}
+            <button type="button" class="smart-brief-panel__action smart-brief-panel__collapse"
+                    data-role="smart-brief-collapse"
+                    aria-expanded="{{ expandedDefault ? 'true' : 'false' }}"
+                    aria-controls="{{ bodyId }}"
+                    data-label-collapse="{{ 'oro_smart_brief.block.collapse'|trans }}"
+                    data-label-expand="{{ 'oro_smart_brief.block.expand'|trans }}"
+                    title="{{ toggleLabel }}"
+                    aria-label="{{ toggleLabel }}">
+                <span class="{{ expandedDefault ? 'fa-chevron-up' : 'fa-chevron-down' }}" aria-hidden="true"></span>
+            </button>
+        </span>
+    </div>
+
+    <div class="smart-brief-panel__body" id="{{ bodyId }}">
+        <p class="smart-brief-panel__text{{ view.fallback ? ' smart-brief-panel__text--fallback' }}">{{ text|oro_smart_brief_text }}</p>
+
+        {% if keyFacts|length %}
+            <div class="smart-brief-panel__facts">
+                <h5 class="smart-brief-panel__facts-title">{{ 'oro_smart_brief.block.key_facts'|trans }}</h5>
+                <ul class="smart-brief-panel__fact-list">
+                    {% for row in keyFacts %}
+                        <li class="smart-brief-panel__fact" data-smart-brief-line="{{ row.key }}">
+                            <span class="smart-brief-panel__fact-icon {{ row.icon }}" aria-hidden="true"></span>
+                            <span class="smart-brief-panel__fact-text">
+                                <span class="smart-brief-panel__fact-label">{{ row.label }}:</span>
+                                {# only the values are marked, each kept on one line; the text around them may wrap #}
+                                <span class="smart-brief-panel__fact-value">
+                                    {%- for part in row.parts -%}
+                                        {{ part.before }}<span class="smart-brief-panel__fact-part">{{ part.value }}</span>{{ part.after }}
+                                    {%- endfor -%}
+                                </span>
+                                {#- no space before the link, so it never wraps alone onto the next line -#}
+                                {%- set link = oro_smart_brief_link(view, entity, row.key) -%}
+                                {%- if link -%}
+                                    <a href="{{ link.url }}" class="smart-brief-panel__fact-link"
+                                       data-role="smart-brief-link"
+                                       {% if link.grid %}data-grid="{{ link.grid }}" data-filters="{{ link.filters|json_encode }}"{% endif %}
+                                       {% if link.section %}data-section="{{ link.section }}"{% endif %}
+                                       title="{{ link.label }}" aria-label="{{ link.label }}">
+                                        <span class="fa-external-link" aria-hidden="true"></span>
+                                    </a>
+                                {% endif %}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</div>

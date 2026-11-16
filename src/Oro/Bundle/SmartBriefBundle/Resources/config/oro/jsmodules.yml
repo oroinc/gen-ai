@@ -1,0 +1,7 @@
+aliases:
+    oro/smart-brief-widget$: orosmartbrief/js/widget/smart-brief-widget
+
+dynamic-imports:
+    commons:
+        - oro/smart-brief-widget
+        - orosmartbrief/js/datagrid/smart-brief-filter-builder

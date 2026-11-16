@@ -1,0 +1,20 @@
+{# SmartBrief container. Its content is fetched after the page has loaded: the
+   widget request is made by the browser, so the record page never waits for the AI. The loading state is
+   rendered here; the block widget (oro/smart-brief-widget) replaces or removes it when the
+   request answers. #}
+<div class="smart-brief"
+     aria-live="polite"
+     aria-busy="true"
+     data-smart-brief-entity-class="{{ oro_class_name(entity, true) }}"
+     data-smart-brief-entity-id="{{ entity.id }}">
+    <div class="smart-brief__writing" data-role="smart-brief-writing">
+        <span class="smart-brief__writing-text">{{ 'oro_smart_brief.block.writing'|trans }}</span>
+        <span class="smart-brief__dots" aria-hidden="true"><span class="smart-brief__dot"></span><span class="smart-brief__dot"></span><span class="smart-brief__dot"></span></span>
+    </div>
+    {{ oro_widget_render({
+        'widgetType': 'smart-brief',
+        'elementFirst': false,
+        'loadingMaskEnabled': false,
+        'url': path('oro_smart_brief_widget', {'entityClass': oro_class_name(entity, true), 'entityId': entity.id})
+    }) }}
+</div>

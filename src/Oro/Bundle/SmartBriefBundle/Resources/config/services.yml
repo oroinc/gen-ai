@@ -1,0 +1,345 @@
+parameters:
+    # Sampling and timeout tunables of the summary client.
+    oro_smart_brief.client.temperature: 0.2
+    oro_smart_brief.client.max_output_tokens: 1024
+    oro_smart_brief.client.timeout: 10
+    oro_smart_brief.client.reasoning_effort: low
+    oro_smart_brief.client.thinking_budget: 0
+    # Maximum length of a text fact value sent to the AI.
+    oro_smart_brief.text_max_length: 200
+
+services:
+    oro_smart_brief.provider.selected_integration_channel:
+        class: Oro\Bundle\SmartBriefBundle\Provider\SelectedIntegrationChannelProvider
+        arguments:
+            - '@oro_config.manager'
+            - '@doctrine'
+            - '@oro_security.token_accessor'
+
+    oro_smart_brief.feature.feature_voter:
+        class: Oro\Bundle\SmartBriefBundle\Feature\Voter\FeatureVoter
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_smart_brief.provider.selected_integration_channel'
+            - '@request_stack'
+            - ['oro_config_configuration_system', 'oro_organization_config', 'oro_user_config']
+        tags:
+            - { name: oro_featuretogle.voter }
+
+    oro_smart_brief.factory.open_ai_client_factory:
+        class: Oro\Bundle\SmartBriefBundle\Factory\OpenAiSummaryClientFactory
+        arguments:
+            - '@oro_ai_content_generation.factory.open_ai_sdk_factory'
+            - '%oro_smart_brief.client.timeout%'
+            - '%oro_smart_brief.client.reasoning_effort%'
+        tags:
+            - { name: oro_smart_brief.client_factory }
+
+    oro_smart_brief.factory.vertex_ai_client_factory:
+        class: Oro\Bundle\SmartBriefBundle\Factory\VertexAiSummaryClientFactory
+        arguments:
+            - !service { class: Google\Client }
+            - '@oro_smart_brief.cache'
+            - '%oro_smart_brief.client.timeout%'
+            - '%oro_smart_brief.client.thinking_budget%'
+        tags:
+            - { name: oro_smart_brief.client_factory }
+
+    oro_smart_brief.client.factory:
+        class: Oro\Bundle\SmartBriefBundle\Factory\SummaryClientFactory
+        arguments:
+            - '@oro_smart_brief.provider.selected_integration_channel'
+            - !tagged_iterator oro_smart_brief.client_factory
+
+    oro_smart_brief.provider.summary_access:
+        class: Oro\Bundle\SmartBriefBundle\Provider\SummaryAccessProvider
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.entity_security_metadata_provider'
+            - '@oro_entity.routing_helper'
+            - '@oro_smart_brief.fact_provider.registry'
+            - '@oro_entity.doctrine_helper'
+            - '@logger'
+        tags:
+            - { name: monolog.logger, channel: oro_smart_brief }
+
+    oro_smart_brief.fact_provider.customer.last_order_source:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Customer\LastOrderSource
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - '@oro_smart_brief.provider.summary_access'
+            - '@oro_smart_brief.provider.calendar_date'
+
+    oro_smart_brief.provider.query.live_quote_criteria:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Query\LiveQuoteCriteria
+
+    oro_smart_brief.fact_provider.customer.open_rfq_source:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Customer\OpenRfqSource
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - '@oro_smart_brief.provider.query.live_quote_criteria'
+            - '@oro_smart_brief.provider.summary_access'
+            - '@oro_smart_brief.provider.calendar_date'
+
+    oro_smart_brief.fact_provider.customer.awaiting_quote_source:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Customer\AwaitingQuoteSource
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - '@oro_smart_brief.provider.query.live_quote_criteria'
+            - '@oro_smart_brief.provider.summary_access'
+            - '@oro_smart_brief.provider.calendar_date'
+
+    oro_smart_brief.fact_provider.customer.contact_activity_classes:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Customer\ContactActivityClasses
+        arguments:
+            - '@oro_activity_list.provider.chain'
+            - '@oro_smart_brief.provider.summary_access'
+            - '@oro_featuretoggle.checker.feature_checker'
+
+    oro_smart_brief.fact_provider.customer.last_contact_source:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Customer\LastContactSource
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - '@oro_smart_brief.fact_provider.customer.contact_activity_classes'
+            - '@oro_smart_brief.provider.summary_access'
+            - '@oro_smart_brief.provider.calendar_date'
+
+    oro_smart_brief.fact_provider.customer:
+        class: Oro\Bundle\SmartBriefBundle\Provider\CustomerSummaryFactProvider
+        arguments:
+            - '@oro_smart_brief.fact_provider.customer.last_order_source'
+            - '@oro_smart_brief.fact_provider.customer.open_rfq_source'
+            - '@oro_smart_brief.fact_provider.customer.awaiting_quote_source'
+            - '@oro_smart_brief.fact_provider.customer.last_contact_source'
+        tags:
+            - { name: oro_smart_brief.fact_provider, priority: 0 }
+
+    oro_smart_brief.fact_provider.rfq.quote_source:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Rfq\RfqQuoteSource
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - '@oro_smart_brief.provider.query.live_quote_criteria'
+            - '@oro_smart_brief.provider.summary_access'
+
+    oro_smart_brief.provider.query.purchased_order_criteria:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Query\PurchasedOrderCriteria
+        arguments:
+            - '@oro_order.provider.previously_purchased_order_statuses'
+
+    oro_smart_brief.fact_provider.rfq.purchase_history_source:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Rfq\PurchaseHistorySource
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - '@oro_smart_brief.provider.query.purchased_order_criteria'
+            - '@oro_smart_brief.provider.summary_access'
+            - '@oro_smart_brief.provider.calendar_date'
+
+    oro_smart_brief.fact_provider.rfq.list_price_source:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Rfq\ListPriceSource
+        arguments:
+            - '@oro_pricing.provider.product_price'
+            - '@oro_pricing.model.product_price_scope_criteria_factory'
+
+    oro_smart_brief.fact_provider.rfq.last_paid_price_source:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Rfq\LastPaidPriceSource
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - '@oro_smart_brief.provider.query.purchased_order_criteria'
+
+    oro_smart_brief.fact_provider.rfq.item_source:
+        class: Oro\Bundle\SmartBriefBundle\Provider\Rfq\RfqItemSource
+        arguments:
+            - '@doctrine'
+            - '@oro_smart_brief.provider.summary_access'
+            - '@oro_smart_brief.fact_provider.rfq.list_price_source'
+            - '@oro_smart_brief.fact_provider.rfq.last_paid_price_source'
+
+    oro_smart_brief.fact_provider.rfq:
+        class: Oro\Bundle\SmartBriefBundle\Provider\RfqSummaryFactProvider
+        arguments:
+            - '@oro_smart_brief.fact_provider.rfq.quote_source'
+            - '@oro_smart_brief.fact_provider.rfq.purchase_history_source'
+            - '@oro_smart_brief.fact_provider.rfq.item_source'
+        tags:
+            - { name: oro_smart_brief.fact_provider, priority: 0 }
+
+    oro_smart_brief.fact_provider.registry:
+        class: Oro\Bundle\SmartBriefBundle\Provider\SummaryFactProviderRegistry
+        arguments:
+            - !tagged_iterator oro_smart_brief.fact_provider
+
+    oro_smart_brief.provider.calendar_date:
+        class: Oro\Bundle\SmartBriefBundle\Provider\CalendarDateProvider
+        arguments:
+            - '@oro_locale.settings'
+
+    oro_smart_brief.formatter.fact:
+        class: Oro\Bundle\SmartBriefBundle\Formatter\FactFormatter
+        arguments:
+            - '@oro_smart_brief.fact_value_type.registry'
+            - '@translator'
+
+    oro_smart_brief.twig.extension:
+        class: Oro\Bundle\SmartBriefBundle\Twig\SmartBriefExtension
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+            - { name: container.service_subscriber, id: oro_smart_brief.serializer.fact_set, key: Oro\Bundle\SmartBriefBundle\Serializer\FactSetSerializer }
+            - { name: container.service_subscriber, id: oro_smart_brief.provider.key_facts }
+
+    oro_smart_brief.provider.key_facts:
+        class: Oro\Bundle\SmartBriefBundle\Provider\KeyFactsProvider
+        arguments:
+            - '@oro_smart_brief.formatter.fact'
+            - '@translator'
+            - '@router'
+            - '@security.authorization_checker'
+            - '@oro_entity_config.config_manager'
+
+    oro_smart_brief.prompt.request_builder:
+        class: Oro\Bundle\SmartBriefBundle\Prompt\SummaryRequestBuilder
+        arguments:
+            - '@translator'
+            - '@oro_smart_brief.formatter.fact'
+            - '@oro_locale.settings'
+            - '%oro_smart_brief.client.temperature%'
+            - '%oro_smart_brief.client.max_output_tokens%'
+
+    oro_smart_brief.fact_value_type.registry:
+        class: Oro\Bundle\SmartBriefBundle\ValueType\FactValueTypeRegistry
+        arguments:
+            - !tagged_iterator oro_smart_brief.fact_value_type
+
+    oro_smart_brief.fact_value_type.date:
+        class: Oro\Bundle\SmartBriefBundle\ValueType\DateValueType
+        arguments:
+            - '@oro_locale.formatter.date_time'
+            - '@translator'
+            - '@oro_smart_brief.provider.calendar_date'
+        tags:
+            - { name: oro_smart_brief.fact_value_type }
+
+    oro_smart_brief.fact_value_type.integer:
+        class: Oro\Bundle\SmartBriefBundle\ValueType\IntegerValueType
+        arguments:
+            - '@oro_locale.formatter.number'
+        tags:
+            - { name: oro_smart_brief.fact_value_type }
+
+    oro_smart_brief.fact_value_type.percent:
+        class: Oro\Bundle\SmartBriefBundle\ValueType\PercentValueType
+        arguments:
+            - '@oro_locale.formatter.number'
+            - '@translator'
+        tags:
+            - { name: oro_smart_brief.fact_value_type }
+
+    oro_smart_brief.fact_value_type.money:
+        class: Oro\Bundle\SmartBriefBundle\ValueType\MoneyValueType
+        arguments:
+            - '@oro_locale.formatter.number'
+        tags:
+            - { name: oro_smart_brief.fact_value_type }
+
+    oro_smart_brief.fact_value_type.text:
+        class: Oro\Bundle\SmartBriefBundle\ValueType\TextValueType
+        arguments:
+            - '%oro_smart_brief.text_max_length%'
+        tags:
+            - { name: oro_smart_brief.fact_value_type }
+
+    oro_smart_brief.fact_value_type.enum_option:
+        class: Oro\Bundle\SmartBriefBundle\ValueType\EnumOptionValueType
+        arguments:
+            - '@translator'
+        tags:
+            - { name: oro_smart_brief.fact_value_type }
+
+    oro_smart_brief.fact_value_type.choice:
+        class: Oro\Bundle\SmartBriefBundle\ValueType\ChoiceValueType
+        arguments:
+            - '@translator'
+        tags:
+            - { name: oro_smart_brief.fact_value_type }
+
+    # One pool for everything the bundle caches: summaries (keys oro_smart_brief_<sha256>, SummaryCacheKeyBuilder),
+    # and the Vertex AI access token (its own key prefix). Clearing the pool
+    # (bin/console cache:pool:clear oro_smart_brief.cache) therefore also drops the token.
+    oro_smart_brief.cache:
+        parent: oro.data.cache
+        tags:
+            - { name: cache.pool, namespace: oro_smart_brief }
+
+    oro_smart_brief.serializer.fact_set:
+        class: Oro\Bundle\SmartBriefBundle\Serializer\FactSetSerializer
+        arguments:
+            - '@oro_smart_brief.fact_value_type.registry'
+
+    oro_smart_brief.cache.key_builder:
+        class: Oro\Bundle\SmartBriefBundle\Cache\SummaryCacheKeyBuilder
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_security.token_accessor'
+            - '@oro_smart_brief.serializer.fact_set'
+            - '@oro_locale.manager.localization'
+
+    oro_smart_brief.cache.summary:
+        class: Oro\Bundle\SmartBriefBundle\Cache\SummaryCache
+        arguments:
+            - '@oro_smart_brief.cache'
+            - '@oro_config.manager'
+            - '@oro_smart_brief.serializer.fact_set'
+
+    oro_smart_brief.generator.text_post_processor:
+        class: Oro\Bundle\SmartBriefBundle\Generator\SummaryTextPostProcessor
+
+    oro_smart_brief.generator.provider_resolver:
+        class: Oro\Bundle\SmartBriefBundle\Generator\SummaryProviderResolver
+        arguments:
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@oro_smart_brief.fact_provider.registry'
+            - '@oro_config.manager'
+
+    oro_smart_brief.generator.text_generator:
+        class: Oro\Bundle\SmartBriefBundle\Generator\SummaryTextGenerator
+        arguments:
+            - '@oro_smart_brief.prompt.request_builder'
+            - '@oro_smart_brief.client.factory'
+            - '@oro_smart_brief.generator.text_post_processor'
+
+    # Public: placeholder expressions resolve the filter by service id.
+    oro_smart_brief.placeholder.filter:
+        class: Oro\Bundle\SmartBriefBundle\Placeholder\SmartBriefPlaceholderFilter
+        public: true
+        arguments:
+            - '@oro_smart_brief.generator.provider_resolver'
+            - '@oro_entity.doctrine_helper'
+            - '@security.authorization_checker'
+
+    oro_smart_brief.generator:
+        class: Oro\Bundle\SmartBriefBundle\Generator\SummaryGenerator
+        arguments:
+            - '@oro_smart_brief.generator.provider_resolver'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_smart_brief.cache.key_builder'
+            - '@oro_smart_brief.cache.summary'
+            - '@oro_smart_brief.generator.text_generator'
+            - '@logger'
+        tags:
+            - { name: monolog.logger, channel: oro_smart_brief }
+
+    oro_smart_brief.event_listener.datagrid.filter_builder:
+        class: Oro\Bundle\SmartBriefBundle\EventListener\Datagrid\SmartBriefFilterBuilderListener
+        arguments:
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@oro_smart_brief.provider.key_facts'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before, method: onBuildBefore }

@@ -1,0 +1,21 @@
+features:
+    oro_smart_brief:
+        label: oro_smart_brief.feature.label
+        description: oro_smart_brief.feature.description
+        toggle: oro_smart_brief.enabled
+        # The platform hides the `configuration` fields while the toggle is off, so before "Enable" is saved only
+        # that checkbox shows, as in AI Content Generation; with the toggle on and the selected channel disabled the
+        # fields stay visible (the voter abstains on configuration pages).
+        configuration:
+            - oro_smart_brief.integration
+            - oro_smart_brief.customer_enabled
+            - oro_smart_brief.rfq_enabled
+            - oro_smart_brief.cache_ttl
+            - oro_smart_brief.cache_invalidate_on_change
+            - oro_smart_brief.regenerate_enabled
+            - oro_smart_brief.expanded
+        allow_if_all_abstain: true
+        placeholder_items:
+            - oro_smart_brief
+        routes:
+            - oro_smart_brief_widget
