@@ -1,0 +1,7 @@
+# Configuration for https://github.com/oroinc/phpstan-rules/
+trusted_data:
+    variables:
+        Oro\Bundle\SmartBriefBundle\Provider\Customer\LastContactSource:
+            findLatest:
+                # built by joinContactDate() from fixed field names only
+                contactedAt: true

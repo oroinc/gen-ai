@@ -10,7 +10,10 @@
         }
     ],
     "autoload": {
-        "psr-4": {"Oro\\Bundle\\AiContentGenerationBundle\\": "src/Oro/Bundle/AiContentGenerationBundle"},
+        "psr-4": {
+            "Oro\\Bundle\\AiContentGenerationBundle\\": "src/Oro/Bundle/AiContentGenerationBundle",
+            "Oro\\Bundle\\SmartBriefBundle\\": "src/Oro/Bundle/SmartBriefBundle"
+        },
         "exclude-from-classmap": ["**/Tests/"]
     },
     "require": {

@@ -1,0 +1,4 @@
+oro_smart_brief:
+    resource: "@OroSmartBriefBundle/Controller/SummaryWidgetController.php"
+    type: attribute
+    prefix: /smart-brief

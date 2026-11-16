@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        public: true
+        autowire: true
+        autoconfigure: true
+
+    Oro\Bundle\SmartBriefBundle\Controller\SummaryWidgetController:
+        arguments:
+            - '@oro_smart_brief.provider.summary_access'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_smart_brief.generator'
+            - '@logger'
+            - '@oro_config.manager'
+        tags:
+            - { name: monolog.logger, channel: oro_smart_brief }

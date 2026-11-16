@@ -1,0 +1,11 @@
+monolog:
+    channels:
+        - 'oro_smart_brief'
+    handlers:
+        # writes the channel, including the info-level generation metrics, to its own file; the entries also reach
+        # the application handlers, so errors stay in the main log
+        oro_smart_brief:
+            type: stream
+            level: info
+            path: '%kernel.logs_dir%/smart_brief_%kernel.environment%.log'
+            channels: [ 'oro_smart_brief' ]

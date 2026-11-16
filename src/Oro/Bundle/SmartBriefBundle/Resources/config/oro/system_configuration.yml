@@ -1,0 +1,121 @@
+system_configuration:
+    groups:
+        smart_brief:
+            title: oro_smart_brief.system_configuration.group.smart_brief.label
+            icon: fa-file-text-o
+        smart_brief_settings:
+            title: oro_smart_brief.system_configuration.group.smart_brief_settings.label
+        smart_brief_view:
+            title: oro_smart_brief.system_configuration.group.smart_brief_view.label
+
+    fields:
+        oro_smart_brief.enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            page_reload: true
+            options:
+                label: oro_smart_brief.system_configuration.field.enabled.label
+                tooltip: oro_smart_brief.system_configuration.field.enabled.tooltip
+
+        oro_smart_brief.integration:
+            data_type: integer
+            type: Oro\Bundle\IntegrationBundle\Form\Type\ConfigIntegrationSelectType
+            options:
+                label: oro_smart_brief.system_configuration.field.integration.label
+                tooltip: oro_smart_brief.system_configuration.field.integration.tooltip
+                allowed_types:
+                    - open_ai
+                    - vertex_ai
+
+        oro_smart_brief.customer_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: oro_smart_brief.system_configuration.field.customer_enabled.label
+                tooltip: oro_smart_brief.system_configuration.field.customer_enabled.tooltip
+
+        oro_smart_brief.rfq_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: oro_smart_brief.system_configuration.field.rfq_enabled.label
+                tooltip: oro_smart_brief.system_configuration.field.rfq_enabled.tooltip
+
+        oro_smart_brief.cache_ttl:
+            data_type: integer
+            type: Symfony\Component\Form\Extension\Core\Type\IntegerType
+            options:
+                label: oro_smart_brief.system_configuration.field.cache_ttl.label
+                tooltip: oro_smart_brief.system_configuration.field.cache_ttl.tooltip
+                required: true
+                constraints:
+                    - NotBlank: ~
+                    - Type: integer
+                    - Positive: ~
+
+        oro_smart_brief.cache_invalidate_on_change:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: oro_smart_brief.system_configuration.field.cache_invalidate_on_change.label
+                tooltip: oro_smart_brief.system_configuration.field.cache_invalidate_on_change.tooltip
+
+        oro_smart_brief.regenerate_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: oro_smart_brief.system_configuration.field.regenerate_enabled.label
+                tooltip: oro_smart_brief.system_configuration.field.regenerate_enabled.tooltip
+
+        oro_smart_brief.expanded:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: oro_smart_brief.system_configuration.field.expanded.label
+                tooltip: oro_smart_brief.system_configuration.field.expanded.tooltip
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            smart_brief:
+                                children:
+                                    smart_brief_settings:
+                                        children:
+                                            - oro_smart_brief.enabled
+                                            - oro_smart_brief.integration
+                                            - oro_smart_brief.customer_enabled
+                                            - oro_smart_brief.rfq_enabled
+                                            - oro_smart_brief.cache_ttl
+                                            - oro_smart_brief.cache_invalidate_on_change
+                                            - oro_smart_brief.regenerate_enabled
+                                            - oro_smart_brief.expanded
+
+        organization_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            smart_brief:
+                                children:
+                                    smart_brief_settings:
+                                        children:
+                                            - oro_smart_brief.enabled
+                                            - oro_smart_brief.integration
+                                            - oro_smart_brief.customer_enabled
+                                            - oro_smart_brief.rfq_enabled
+                                            - oro_smart_brief.regenerate_enabled
+                                            - oro_smart_brief.expanded
+
+        user_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            look_and_feel:
+                                children:
+                                    smart_brief_view:
+                                        children:
+                                            - oro_smart_brief.expanded
